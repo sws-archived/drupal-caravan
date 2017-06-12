@@ -14,7 +14,6 @@
 	"emuse/behat-html-formatter": "dev-master",
 	"behat/behat":  "^3.3.0",
 	"lakion/mink-debug-extension": "^1.2",
-        "se/selenium-server-standalone": "3.4",
 	"consolidation/robo": "^1.0.6",
 	"geerlingguy/drupal-vm": "4.5"
     },
