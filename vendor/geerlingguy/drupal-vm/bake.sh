@@ -82,7 +82,9 @@ status "Starting Selenium"
 docker exec $DRUPALVM_MACHINE_NAME service selenium start
 
 status "Installing Site, this make take a while"
-docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth && vendor/bin/blt local:setup"
+# Forcing this to resolve as true, so the script may continue.
+# Content is not able to be imported at the comment.
+docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth && vendor/bin/blt local:setup" || true
 
 status "Running tests"
 docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth/tests/behat && ../../vendor/bin/behat -p default features"
