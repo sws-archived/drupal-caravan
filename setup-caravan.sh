@@ -12,7 +12,6 @@ yes | cp -rf vendor/kbrownell/drupal-caravan/blt/project.yml blt/project.yml
 
 yes | cp -rf vendor/kbrownell/drupal-caravan/tests/behat/behat.yml tests/behat/behat.yml
 
-yes | cp -rf vendor/kbrownell/drupal-caravan/vendor/acquia/blt/scripts/blt/drupal-vm/post-provision.sh vendor/acquia/blt/scripts/blt/drupal-vm/post-provision.sh
 yes | cp -rf vendor/kbrownell/drupal-caravan/vendor/geerlingguy/drupal-vm/config.yml vendor/geerlingguy/drupal-vm/config.yml
 yes | cp -rf vendor/kbrownell/drupal-caravan/vendor/geerlingguy/drupal-vm/bake.sh vendor/geerlingguy/drupal-vm/bake.sh
 yes | cp -rf vendor/kbrownell/drupal-caravan/vendor/geerlingguy/drupal-vm/load-image_local.sh vendor/geerlingguy/drupal-vm/load-image_local.sh

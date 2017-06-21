@@ -70,6 +70,3 @@ php_packages_extra:
 selenium_install_firefox: no
 selenium_install_chrome: no
 selenium_version: 2.47.1
-
-post_provision_scripts:
-  - "../../../acquia/blt/scripts/drupal-vm/post-provision.sh"

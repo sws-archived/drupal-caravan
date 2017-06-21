@@ -59,16 +59,17 @@ docker exec $DRUPALVM_MACHINE_NAME env TERM=xterm ANSIBLE_FORCE_COLOR=true \
 status "...done!"
 status "Visit the Drupal VM dashboard: http://$DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTP_PORT"
 
-status "Install BLT alias"
+status "Install BLT alias and vim"
 docker exec $DRUPALVM_MACHINE_NAME /var/www/earth/vendor/acquia/blt/scripts/blt/install-alias.sh -y
-docker exec $DRUPALVM_MACHINE_NAME source /root/.bashrc
 
 status "Installing Chrome 59.0.3071.104"
 docker exec $DRUPALVM_MACHINE_NAME sudo apt-get install libxss1 libappindicator1 libindicator7 vim wget -y
 docker exec $DRUPALVM_MACHINE_NAME wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 
-docker exec $DRUPALVM_MACHINE_NAME sudo dpkg -i google-chrome*.deb
-docker exec $DRUPALVM_MACHINE_NAME sudo apt-get install -f -y
+# Unpackaging chrome returns an error because it is missing dependencies, which is not a problem,
+# We install them a moment later.  So adding || true to be sure this behavior does not quite the script.
+docker exec $DRUPALVM_MACHINE_NAME sudo dpkg -i google-chrome-stable_current_amd64.deb || true
+docker exec $DRUPALVM_MACHINE_NAME sudo apt-get -f install -y
 docker exec $DRUPALVM_MACHINE_NAME google-chrome --version
 
 status "Installing Chromedriver"
@@ -81,4 +82,4 @@ status "Starting Selenium"
 docker exec $DRUPALVM_MACHINE_NAME service selenium start
 
 status "Logging into the new container"
-docker exec $DRUPALVM_MACHINE_NAME -it earth bash
+docker exec -it $DRUPALVM_MACHINE_NAME earth bash
