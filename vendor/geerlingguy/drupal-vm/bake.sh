@@ -59,6 +59,10 @@ docker exec $DRUPALVM_MACHINE_NAME env TERM=xterm ANSIBLE_FORCE_COLOR=true \
 status "...done!"
 status "Visit the Drupal VM dashboard: http://$DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTP_PORT"
 
+status "Install BLT alias"
+docker exec $DRUPALVM_MACHINE_NAME /var/www/earth/vendor/acquia/blt/scripts/blt/install-alias.sh -y
+docker exec $DRUPALVM_MACHINE_NAME source /root/.bashrc
+
 status "Installing Chrome 59.0.3071.104"
 docker exec $DRUPALVM_MACHINE_NAME sudo apt-get install libxss1 libappindicator1 libindicator7 vim wget -y
 docker exec $DRUPALVM_MACHINE_NAME wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
