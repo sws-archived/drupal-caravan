@@ -17,6 +17,9 @@ yes | cp -rf vendor/kbrownell/drupal-caravan/vendor/geerlingguy/drupal-vm/bake.s
 yes | cp -rf vendor/kbrownell/drupal-caravan/vendor/geerlingguy/drupal-vm/load-image_local.sh vendor/geerlingguy/drupal-vm/load-image_local.sh
 yes | cp -rf vendor/kbrownell/drupal-caravan/vendor/geerlingguy/drupal-vm/load-image_travis.sh vendor/geerlingguy/drupal-vm/load-image_travis.sh
 
+# Add local alias
+cat aliases.drushrc.php >> drush/site-aliases/aliases.drushrc.php
+
 # Build test environment
 pwd
 vendor/geerlingguy/drupal-vm/bake.sh
