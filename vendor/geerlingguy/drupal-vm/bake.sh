@@ -81,5 +81,16 @@ docker exec $DRUPALVM_MACHINE_NAME sudo ln -s /usr/local/share/chromedriver /usr
 status "Starting Selenium"
 docker exec $DRUPALVM_MACHINE_NAME service selenium start
 
-status "Logging into the new container"
-docker exec -it $DRUPALVM_MACHINE_NAME earth bash
+status "Installing Site, this make take a while"
+docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth && vendor/bin/blt local:setup"
+
+status "Running tests"
+docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth/tests/behat && ../../vendor/bin/behat -p default features"
+
+read -p "Would you like to log into the test environment? Yes to login, No to quit. " -n 1 -r
+echo "\n"
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  docker exec -it $DRUPALVM_MACHINE_NAME earth bash
+else
+ exit
+fi
