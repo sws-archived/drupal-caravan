@@ -18,7 +18,7 @@ yes | cp -rf vendor/kbrownell/drupal-caravan/vendor/geerlingguy/drupal-vm/load-i
 yes | cp -rf vendor/kbrownell/drupal-caravan/vendor/geerlingguy/drupal-vm/load-image_travis.sh vendor/geerlingguy/drupal-vm/load-image_travis.sh
 
 # Add local alias
-cat aliases.drushrc.php >> drush/site-aliases/aliases.drushrc.php
+cat vendor/kbrownell/drupal-caravan/aliases.drushrc.php >> drush/site-aliases/aliases.drushrc.php
 
 # Build test environment
 pwd
