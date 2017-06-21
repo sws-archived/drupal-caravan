@@ -1,0 +1,73 @@
+default:
+  suites:
+    default:
+      paths:
+        # Set features to repo root so that .feature files belonging to contrib
+        # modules, themes, and profiles can be discovered. Enable these
+        # additional paths in build/phing/build.yml.
+        features: /var/www/earth
+        bootstrap: /var/www/earth/tests/behat/features/bootstrap
+      contexts:
+        - Drupal\FeatureContext:
+          parameters:
+            environment:
+              # absolute path to local directory to store screenshots - do not include trailing slash
+              screenshot_dir: '/Users/username/Desktop/test'
+        - Drupal\DrupalExtension\Context\DrupalContext
+        - Drupal\DrupalExtension\Context\MinkContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\DrupalExtension\Context\DrushContext
+  extensions:
+    Behat\MinkExtension:
+      javascript_session: selenium2
+      # configure the base url for your site
+      base_url: http://localhost
+      # set default command for "Show last response" step.
+      browser_name: phantomjs
+      show_cmd: "open %s"
+      # use the following lines to disable SSL authentication for goutte.
+      # goutte:
+      #   guzzle_parameters:
+      #     redirect.disable: true
+      #     ssl.certificate_authority: system
+      #     curl.options:
+      #       CURLOPT_SSL_VERIFYPEER: false
+      #       CURLOPT_SSL_VERIFYHOST: false
+      #       CURLOPT_CERTINFO: false
+      #       CURLOPT_TIMEOUT: 120
+      selenium2:
+        browser: chrome
+        capabilities:
+          chrome:
+            switches:
+              - "--headless"
+    Drupal\DrupalExtension:
+      drupal:
+        # This must be an absolute path.
+        drupal_root: /var/www/earth/docroot
+      drush:
+        alias: '@self'
+
+
+default:
+  suites:
+    default:
+      paths:
+        - %paths.base%/features
+  extensions:
+    Behat\MinkExtension:
+      default_session: goutte
+      javascript_session: selenium2
+      goutte: ~
+      files_path: "%paths.base%/media"
+    Drupal\DrupalExtension:
+      blackbox: ~
+      api_driver: "drupal"
+    jarnaiz\JUnitFormatter\JUnitFormatterExtension:
+        filename: report.xml
+        outputDir: %paths.base%/build/tests
+    Bex\Behat\ScreenshotExtension:
+      screenshot_taking_mode: failed_steps
+      image_drivers:
+        local:
+          screenshot_directory: /tmp

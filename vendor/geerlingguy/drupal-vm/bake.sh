@@ -1,0 +1,80 @@
+#!/bin/bash
+#
+# Bake a Docker container with Drupal VM.
+
+# Exit on any individual command failure.
+set -e
+
+# Set variables.
+DRUPALVM_IP_ADDRESS="${DRUPALVM_IP_ADDRESS:-192.168.88.88}"
+DRUPALVM_MACHINE_NAME="${DRUPALVM_MACHINE_NAME:-earth}"
+DRUPALVM_HOSTNAME="${DRUPALVM_HOSTNAME:-earth.local}"
+DRUPALVM_PROJECT_ROOT="${DRUPALVM_PROJECT_ROOT:-/var/www/earth}"
+
+DRUPALVM_HTTP_PORT="${DRUPALVM_HTTP_PORT:-9000}"
+DRUPALVM_HTTPS_PORT="${DRUPALVM_HTTPS_PORT:-9001}"
+
+DISTRO="${DISTRO:-ubuntu1604}"
+OPTS="${OPTS:---privileged}"
+INIT="${INIT:-/lib/systemd/systemd}"
+
+# Helper function to colorize statuses.
+function status() {
+  status=$1
+  printf "\n"
+  echo -e -n "\033[32m$status"
+  echo -e '\033[0m'
+}
+
+# Set volume options.
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  volume_opts='rw,cached'
+else
+  volume_opts='rw'
+fi
+
+# Run the container.
+status "Bringing up Docker container..."
+docker run --name=$DRUPALVM_MACHINE_NAME -d \
+  --add-host "$DRUPALVM_HOSTNAME":127.0.0.1 \
+  -v $PWD:$DRUPALVM_PROJECT_ROOT/:$volume_opts \
+  -p $DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTP_PORT:80 \
+  -p $DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTPS_PORT:443 \
+  $OPTS \
+  geerlingguy/docker-$DISTRO-ansible:latest \
+  $INIT
+
+# Create Drupal directory.
+docker exec $DRUPALVM_MACHINE_NAME mkdir -p $DRUPALVM_PROJECT_ROOT
+
+# Set things up and run the Ansible playbook.
+status "Running setup playbook..."
+docker exec --tty $DRUPALVM_MACHINE_NAME env TERM=xterm \
+  ansible-playbook $DRUPALVM_PROJECT_ROOT/vendor/geerlingguy/drupal-vm/tests/test-setup.yml
+
+status "Provisioning Drupal VM inside Docker container..."
+docker exec $DRUPALVM_MACHINE_NAME env TERM=xterm ANSIBLE_FORCE_COLOR=true \
+  ansible-playbook $DRUPALVM_PROJECT_ROOT/vendor/geerlingguy/drupal-vm/provisioning/playbook.yml
+
+status "...done!"
+status "Visit the Drupal VM dashboard: http://$DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTP_PORT"
+
+status "Installing Chrome 59.0.3071.104"
+docker exec $DRUPALVM_MACHINE_NAME sudo apt-get install libxss1 libappindicator1 libindicator7 vim wget -y
+docker exec $DRUPALVM_MACHINE_NAME wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+
+docker exec $DRUPALVM_MACHINE_NAME sudo dpkg -i google-chrome*.deb
+docker exec $DRUPALVM_MACHINE_NAME sudo apt-get install -f -y
+docker exec $DRUPALVM_MACHINE_NAME google-chrome --version
+
+status "Installing Chromedriver"
+docker exec $DRUPALVM_MACHINE_NAME wget https://chromedriver.storage.googleapis.com/2.30/chromedriver_linux64.zip
+docker exec $DRUPALVM_MACHINE_NAME unzip chromedriver_linux64.zip
+docker exec $DRUPALVM_MACHINE_NAME sudo mv -f chromedriver /usr/local/share/chromedriver
+docker exec $DRUPALVM_MACHINE_NAME sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
+docker exec $DRUPALVM_MACHINE_NAME sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
+status "Starting Selenium"
+docker exec $DRUPALVM_MACHINE_NAME service selenium start
+
+status "Logging into the new container"
+docker exec $DRUPALVM_MACHINE_NAME -it earth bash
