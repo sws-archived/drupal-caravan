@@ -5,13 +5,15 @@
 
 # Setup config file paths
 BLT_PROJECT_CONFIG="vendor/kbrownell/drupal-caravan/config/project.local.yml"
-BEHAT_CONFIG="vendor/kbrownell/drupal-caravan/config/behat.local.yml"
+BEHAT_LOCAL_CONFIG="vendor/kbrownell/drupal-caravan/config/behat.local.yml"
+BEHAT_DEFAULT_CONFIG="vendor/kbrownell/drupal-caravan/config/behat.yml"
 DRUPALVM_CONFIG="vendor/kbrownell/drupal-caravan/config/drupalvm.config.yml"
 DRUSH_ALIAS="vendor/kbrownell/drupal-caravan/config/aliases.drushrc.php"
 
 # Copy config files into place
 cat $BLT_PROJECT_CONFIG >> blt/project.local.yml
-cat $BEHAT_CONFIG >> tests/behat/behat.local.yml
+cat $BEHAT_LOCAL_CONFIG >> tests/behat/behat.local.yml
+cat $BEHAT_DEFAULT_CONFIG >> tests/behat/behat.yml
 cat $DRUPALVM_CONFIG >> vendor/geerlingguy/drupal-vm/config.yml
 cat $DRUSH_ALIAS >> drush/site-aliases/aliases.drushrc.php
 
@@ -50,14 +52,23 @@ fi
 
 # Run the container.
 status "Bringing up Docker container..."
-docker run --name=$DRUPALVM_MACHINE_NAME -d \
-  --add-host "$DRUPALVM_HOSTNAME":127.0.0.1 \
-  -v $PWD:$DRUPALVM_PROJECT_ROOT/:$volume_opts \
-  -p $DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTP_PORT:80 \
-  -p $DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTPS_PORT:443 \
-  $OPTS \
-  geerlingguy/docker-$DISTRO-ansible:latest \
-  $INIT
+if [ "$ENVIRONMENT" == "travis" ]; then
+  docker run --name=$DRUPALVM_MACHINE_NAME -d \
+    --add-host "$DRUPALVM_HOSTNAME":127.0.0.1 \
+    -v $PWD:$DRUPALVM_PROJECT_ROOT/:$volume_opts \
+    $OPTS \
+    geerlingguy/docker-$DISTRO-ansible:latest \
+    $INIT
+else
+  docker run --name=$DRUPALVM_MACHINE_NAME -d \
+    --add-host "$DRUPALVM_HOSTNAME":127.0.0.1 \
+    -v $PWD:$DRUPALVM_PROJECT_ROOT/:$volume_opts \
+    -p $DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTP_PORT:80 \
+    -p $DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTPS_PORT:443 \
+    $OPTS \
+    geerlingguy/docker-$DISTRO-ansible:latest \
+    $INIT
+fi
 
 # Create Drupal directory.
 docker exec $DRUPALVM_MACHINE_NAME mkdir -p $DRUPALVM_PROJECT_ROOT

@@ -1,20 +1,17 @@
 sudo: required
 
+env:
+  global:
+    - ENVIRONMENT="travis"
+
 services:
   - docker
 
-cache:
-  directories:
-    - $HOME/.cache
-    - $HOME/.composer/cache
-    - $HOME/.drush/cache
+language: php
+php:
+  - 5.6
 
 before_install:
   - composer config -g github-oauth.github.com $GITHUB_TOKEN
   - composer install --dev
-  - cd $TRAVIS_BUILD_DIR/vendor/geerlingguy/drupal-vm
-  - mv $TRAVIS_BUILD_DIR/config.yml config.yml
-  - wget -O earth.tar.gz $DOWNLOAD_DOCKER_IMAGE 2>/dev/null
-  - composer docker-load-image
-  - ../../../run-baked-container-travis.sh
-  # Able to log into the container, but not run any commands remotely
+  - $TRAVIS_BUILD_DIR/vendor/kbrownell/drupal-caravan/setup-caravan.sh
