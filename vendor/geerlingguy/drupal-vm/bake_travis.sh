@@ -83,11 +83,3 @@ docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth && vendor/bin/blt lo
 
 status "Running tests"
 docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth/tests/behat && ../../vendor/bin/behat -p default --colors features"
-
-read -p "Would you like to log into the test environment? Yes to login, No to quit. " -n 1 -r
-echo "\n"
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-  docker exec -it $DRUPALVM_MACHINE_NAME earth bash
-else
- exit
-fi
