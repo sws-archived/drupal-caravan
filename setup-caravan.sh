@@ -3,13 +3,17 @@
 # This script assumes you are running this file from the repository root directory.
 # For example, /var/www/se3_blt
 
-# Copy config files into place
-cp vendor/kbrownell/drupal-caravan/config/project.local.yml blt/project.local.yml
-cp vendor/kbrownell/drupal-caravan/config/behat.local.yml tests/behat/behat.local.yml
-cp vendor/kbrownell/drupal-caravan/config/drupalvm.config.yml vendor/geerlingguy/drupal-vm/config.yml
+# Setup config file paths
+BLT_PROJECT_CONFIG="vendor/kbrownell/drupal-caravan/config/project.local.yml"
+BEHAT_CONFIG="vendor/kbrownell/drupal-caravan/config/behat.local.yml"
+DRUPALVM_CONFIG="vendor/kbrownell/drupal-caravan/config/drupalvm.config.yml"
+DRUSH_ALIAS="vendor/kbrownell/drupal-caravan/config/aliases.drushrc.php"
 
-# Add local alias
-cat vendor/kbrownell/drupal-caravan/aliases.drushrc.php >> drush/site-aliases/aliases.drushrc.php
+# Copy config files into place
+cat $BLT_PROJECT_CONFIG >> blt/project.local.yml
+cat $BEHAT_CONFIG >> tests/behat/behat.local.yml
+cat $DRUPALVM_CONFIG >> vendor/geerlingguy/drupal-vm/config.yml
+cat $DRUSH_ALIAS >> drush/site-aliases/aliases.drushrc.php
 
 # Bake a Docker container with Drupal VM.
 
