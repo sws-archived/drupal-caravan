@@ -113,7 +113,7 @@ status "Installing Site, this make take a while"
 docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth && vendor/bin/blt local:setup" || true
 
 status "Running tests"
-docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth/tests/behat && ../../vendor/bin/behat -p default --colors features"
+docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth/tests/behat && ../../vendor/bin/behat -p local --colors features"
 
 read -p "Would you like to log into the test environment? Yes to login, No to quit. " -n 1 -r
 echo "\n"
