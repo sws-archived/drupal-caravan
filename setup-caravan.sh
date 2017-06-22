@@ -115,10 +115,13 @@ docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth && vendor/bin/blt lo
 status "Running tests"
 docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth/tests/behat && ../../vendor/bin/behat -p local --colors features"
 
-read -p "Would you like to log into the test environment? Yes to login, No to quit. " -n 1 -r
-echo "\n"
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-  docker exec -it $DRUPALVM_MACHINE_NAME bash
-else
- exit
+# Do not run in continuous integration environments
+if [ -z "$ENVIRONMENT" ]; then
+  read -p "Would you like to log into the test environment? Yes to login, No to quit. " -n 1 -r
+  echo "\n"
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    docker exec -it $DRUPALVM_MACHINE_NAME bash
+  else
+   exit
+  fi
 fi
