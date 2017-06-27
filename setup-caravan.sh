@@ -9,7 +9,6 @@ BEHAT_LOCAL_CONFIG="vendor/su-sws/drupal-caravan/config/behat.local.yml"
 BEHAT_DEFAULT_CONFIG="vendor/su-sws/drupal-caravan/config/behat.yml"
 DRUPALVM_CONFIG="vendor/su-sws/drupal-caravan/config/drupalvm.config.yml"
 DRUSH_ALIAS="vendor/su-sws/drupal-caravan/config/aliases.drushrc.php"
-SSH_CONFIG="vendor/su-sws/drupal-caravan/config/config.ssh"
 
 # Copy config files into place
 cat $BLT_PROJECT_CONFIG >> blt/project.local.yml
@@ -17,7 +16,6 @@ cat $BEHAT_LOCAL_CONFIG >> tests/behat/behat.local.yml
 cat $BEHAT_DEFAULT_CONFIG >> tests/behat/behat.yml
 cat $DRUPALVM_CONFIG >> vendor/geerlingguy/drupal-vm/config.yml
 cat $DRUSH_ALIAS >> drush/site-aliases/aliases.drushrc.php
-cat $SSH_CONFIG >> /root/.ssh/config
 
 # Bake a Docker container with Drupal VM.
 
@@ -67,6 +65,8 @@ else
     -v $PWD:$DRUPALVM_PROJECT_ROOT/:$volume_opts \
     -p $DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTP_PORT:80 \
     -p $DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTPS_PORT:443 \
+    -v $($SSH_AUTH_SOCK):$($SSH_AUTH_SOCK) \
+    -e SSH_AUTH_SOCK=$SSH_AUTH_SOCK my_image.
     $OPTS \
     geerlingguy/docker-$DISTRO-ansible:latest \
     $INIT
@@ -112,7 +112,7 @@ docker exec $DRUPALVM_MACHINE_NAME service selenium start
 status "Installing Site, this make take a while"
 # Forcing this to resolve as true, so the script may continue.
 # Content is not able to be imported at the comment.
-docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth && vendor/bin/blt local:setup" || true
+docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth && vendor/bin/blt local:refresh" || true
 
 status "Running tests"
 docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth/tests/behat && ../../vendor/bin/behat -p local --colors features"
