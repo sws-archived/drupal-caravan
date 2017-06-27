@@ -1,5 +1,5 @@
 {
-    "name": "kbrownell/drupal-caravan",
+    "name": "su-sws/drupal-caravan",
     "description": "All the tools you need for running behat and visual regression tests within your site directory.",
     "type": "project",
     "require": {

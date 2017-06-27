@@ -4,11 +4,12 @@
 # For example, /var/www/se3_blt
 
 # Setup config file paths
-BLT_PROJECT_CONFIG="vendor/kbrownell/drupal-caravan/config/project.local.yml"
-BEHAT_LOCAL_CONFIG="vendor/kbrownell/drupal-caravan/config/behat.local.yml"
-BEHAT_DEFAULT_CONFIG="vendor/kbrownell/drupal-caravan/config/behat.yml"
-DRUPALVM_CONFIG="vendor/kbrownell/drupal-caravan/config/drupalvm.config.yml"
-DRUSH_ALIAS="vendor/kbrownell/drupal-caravan/config/aliases.drushrc.php"
+BLT_PROJECT_CONFIG="vendor/su-sws/drupal-caravan/config/project.local.yml"
+BEHAT_LOCAL_CONFIG="vendor/su-sws/drupal-caravan/config/behat.local.yml"
+BEHAT_DEFAULT_CONFIG="vendor/su-sws/drupal-caravan/config/behat.yml"
+DRUPALVM_CONFIG="vendor/su-sws/drupal-caravan/config/drupalvm.config.yml"
+DRUSH_ALIAS="vendor/su-sws/drupal-caravan/config/aliases.drushrc.php"
+SSH_CONFIG="vendor/su-sws/drupal-caravan/config/config.ssh"
 
 # Copy config files into place
 cat $BLT_PROJECT_CONFIG >> blt/project.local.yml
@@ -16,6 +17,7 @@ cat $BEHAT_LOCAL_CONFIG >> tests/behat/behat.local.yml
 cat $BEHAT_DEFAULT_CONFIG >> tests/behat/behat.yml
 cat $DRUPALVM_CONFIG >> vendor/geerlingguy/drupal-vm/config.yml
 cat $DRUSH_ALIAS >> drush/site-aliases/aliases.drushrc.php
+cat $SSH_CONFIG >> /root/.ssh/config
 
 # Bake a Docker container with Drupal VM.
 
