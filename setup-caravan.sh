@@ -65,8 +65,8 @@ else
     -v $PWD:$DRUPALVM_PROJECT_ROOT/:$volume_opts \
     -p $DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTP_PORT:80 \
     -p $DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTPS_PORT:443 \
-    -v $($SSH_AUTH_SOCK):$($SSH_AUTH_SOCK) \
-    -e SSH_AUTH_SOCK=$SSH_AUTH_SOCK my_image.
+    -v $HOME/.ssh/acquia_id_rsa:/root/.ssh/id_rsa \
+    -e GIT_SSH_COMMAND="ssh -q -i /root/.ssh/id_rsa -o 'StrictHostKeyChecking no' -o 'UserKnownHostsFile=/dev/null'" \
     $OPTS \
     geerlingguy/docker-$DISTRO-ansible:latest \
     $INIT
