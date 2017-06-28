@@ -66,7 +66,7 @@ else
     -p $DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTP_PORT:80 \
     -p $DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTPS_PORT:443 \
     -v $HOME/.ssh/acquia_id_rsa:/root/.ssh/id_rsa \
-    -e GIT_SSH_COMMAND="ssh -q -i /root/.ssh/id_rsa -o 'StrictHostKeyChecking no' -o 'UserKnownHostsFile=/dev/null'" \
+    -v $HOME/.ssh/acquia_id_rsa.pub:/root/.ssh/id_rsa.pub \
     $OPTS \
     geerlingguy/docker-$DISTRO-ansible:latest \
     $INIT
