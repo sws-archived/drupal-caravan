@@ -92,7 +92,7 @@ docker exec $DRUPALVM_MACHINE_NAME /var/www/earth/vendor/acquia/blt/scripts/blt/
 
 status "Add ssh key"
 docker exec $DRUPALVM_MACHINE_NAME sh -c 'eval "$(ssh-agent)"'
-docker exec $DRUPALVM_MACHINE_NAME sh -c "ssh -o StrictHostKeyChecking=no earthstg.ssh.prod.acquia-sites.com uptime"
+docker exec $DRUPALVM_MACHINE_NAME sh -c "ssh-keyscan earthstg.ssh.prod.acquia-sites.com >> /root/.ssh/known_hosts"
 
 status "Installing Chrome 59.0.3071.104"
 docker exec $DRUPALVM_MACHINE_NAME sudo apt-get install libxss1 libappindicator1 libindicator7 vim wget -y
