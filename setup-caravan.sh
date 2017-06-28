@@ -87,9 +87,12 @@ docker exec $DRUPALVM_MACHINE_NAME env TERM=xterm ANSIBLE_FORCE_COLOR=true \
 status "...done!"
 status "Visit the Drupal VM dashboard: http://$DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTP_PORT"
 
-status "Install BLT alias and vim, also add key to ssh-agent"
+status "Install BLT alias and vim"
 docker exec $DRUPALVM_MACHINE_NAME /var/www/earth/vendor/acquia/blt/scripts/blt/install-alias.sh -y
+
+status "Add ssh key"
 docker exec $DRUPALVM_MACHINE_NAME sh -c 'eval "$(ssh-agent)"'
+docker exec $DRUPALVM_MACHINE_NAME sh -c "ssh -o StrictHostKeyChecking=no earthstg.ssh.prod.acquia-sites.com uptime"
 
 status "Installing Chrome 59.0.3071.104"
 docker exec $DRUPALVM_MACHINE_NAME sudo apt-get install libxss1 libappindicator1 libindicator7 vim wget -y
@@ -113,7 +116,7 @@ docker exec $DRUPALVM_MACHINE_NAME service selenium start
 status "Installing Site, this make take a while"
 # Forcing this to resolve as true, so the script may continue.
 # Content is not able to be imported at the comment.
-docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth && vendor/bin/blt local:refresh" || true
+docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth && vendor/bin/blt local:refresh || true"
 
 status "Running tests"
 docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth/tests/behat && ../../vendor/bin/behat -p local --colors features"
