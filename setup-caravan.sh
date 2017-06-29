@@ -4,18 +4,13 @@
 # For example, /var/www/se3_blt
 
 # Setup config file paths
-BLT_PROJECT_CONFIG="vendor/su-sws/drupal-caravan/config/project.local.yml"
-BEHAT_LOCAL_CONFIG="vendor/su-sws/drupal-caravan/config/behat.local.yml"
 BEHAT_DEFAULT_CONFIG="vendor/su-sws/drupal-caravan/config/behat.yml"
-DRUPALVM_CONFIG="vendor/su-sws/drupal-caravan/config/drupalvm.config.yml"
-DRUSH_ALIAS="vendor/su-sws/drupal-caravan/config/aliases.drushrc.php"
+DRUPALVM_CONFIG="vendor/su-sws/drupal-caravan/config/acquia.config.yml"
+DRUSH_ALIAS="vendor/su-sws/drupal-caravan/config/caravan.aliases.drushrc.php"
 
 # Copy config files into place
-cat $BLT_PROJECT_CONFIG >> blt/project.local.yml
-cat $BEHAT_LOCAL_CONFIG >> tests/behat/behat.local.yml
-cat $BEHAT_DEFAULT_CONFIG >> tests/behat/behat.yml
-cat $DRUPALVM_CONFIG >> vendor/geerlingguy/drupal-vm/config.yml
-cat $DRUSH_ALIAS >> drush/site-aliases/aliases.drushrc.php
+ln -s $DRUPALVM_CONFIG vendor/geerlingguy/drupal-vm/acquia.config.yml
+cp $DRUSH_ALIAS /var/www/earth/drush/site-aliases/caravan.aliases.drushrc.php
 
 # Bake a Docker container with Drupal VM.
 
@@ -82,6 +77,7 @@ docker exec --tty $DRUPALVM_MACHINE_NAME env TERM=xterm \
 
 status "Provisioning Drupal VM inside Docker container..."
 docker exec $DRUPALVM_MACHINE_NAME env TERM=xterm ANSIBLE_FORCE_COLOR=true \
+  DRUPALVM_ENV=acquia \
   ansible-playbook $DRUPALVM_PROJECT_ROOT/vendor/geerlingguy/drupal-vm/provisioning/playbook.yml
 
 status "...done!"
@@ -116,11 +112,12 @@ docker exec $DRUPALVM_MACHINE_NAME service selenium start
 status "Installing Site, this make take a while"
 # Forcing this to resolve as true, so the script may continue.
 # Content is not able to be imported at the comment.
-docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth && vendor/bin/blt local:refresh || true"
+docker exec $DRUPALVM_MACHINE_NAME sh -c "/var/www/earth/vendor/bin/blt local:refresh || true"
 
 status "Running tests"
-docker exec $DRUPALVM_MACHINE_NAME sh -c "cd /var/www/earth/tests/behat && ../../vendor/bin/behat -p local --colors features"
+docker exec $DRUPALVM_MACHINE_NAME sh -c "/var/www/earth/vendor/bin/behat -p local --colors --config $BEHAT_DEFAULT_CONFIG  /var/www/earth/tests/behat/features"
 
+status "Visit the Drupal VM dashboard: http://$DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTP_PORT"
 # Do not run in continuous integration environments
 if [ -z "$ENVIRONMENT" ]; then
   read -p "Would you like to log into the test environment? Yes to login, No to quit. " -n 1 -r
