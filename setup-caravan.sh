@@ -87,6 +87,7 @@ status "Install BLT alias and vim"
 docker exec $DRUPALVM_MACHINE_NAME /var/www/earth/vendor/acquia/blt/scripts/blt/install-alias.sh -y
 
 status "Add ssh key"
+docker exec $DRUPALVM_MACHINE_NAME sh -c "chmod 600 /root/.ssh/id_rsa"
 docker exec $DRUPALVM_MACHINE_NAME sh -c 'eval "$(ssh-agent)"'
 docker exec $DRUPALVM_MACHINE_NAME sh -c "ssh-keyscan earthstg.ssh.prod.acquia-sites.com >> /root/.ssh/known_hosts"
 
