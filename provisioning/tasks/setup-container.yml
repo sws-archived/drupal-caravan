@@ -1,0 +1,54 @@
+---
+# Set volume options.
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  volume_opts='rw,cached'
+else
+  volume_opts='rw'
+fi
+
+if [ "$ENVIRONMENT" == "travis" ]; then
+  docker run --name=$DRUPALVM_MACHINE_NAME -d \
+    --add-host "$DRUPALVM_HOSTNAME":127.0.0.1 \
+    -v $PWD:$DRUPALVM_PROJECT_ROOT/:$volume_opts \
+    $OPTS \
+    geerlingguy/docker-$DISTRO-ansible:latest \
+    $INIT
+else
+  docker run --name=$DRUPALVM_MACHINE_NAME -d \
+    --add-host "$DRUPALVM_HOSTNAME":127.0.0.1 \
+    -v $PWD:$DRUPALVM_PROJECT_ROOT/:$volume_opts \
+    -p $DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTP_PORT:80 \
+    -p $DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTPS_PORT:443 \
+    -v $HOME/.ssh/acquia_id_rsa:/root/.ssh/id_rsa \
+    -v $HOME/.ssh/acquia_id_rsa.pub:/root/.ssh/id_rsa.pub \
+    $OPTS \
+    geerlingguy/docker-$DISTRO-ansible:latest \
+    $INIT
+fi
+
+# Create Drupal directory.
+docker exec $DRUPALVM_MACHINE_NAME mkdir -p $DRUPALVM_PROJECT_ROOT
+
+# Set things up and run the Ansible playbook.
+status "Running setup playbook..."
+docker exec --tty $DRUPALVM_MACHINE_NAME env TERM=xterm \
+  ansible-playbook $DRUPALVM_PROJECT_ROOT/vendor/geerlingguy/drupal-vm/tests/test-setup.yml
+
+
+# This should be:
+# - hosts: all
+#   become: yes
+#
+#   vars_files:
+#     - vars/drupalvm.yml
+#
+# - include: /var/www/earth/vendor/geerlingguy/drupal-vm/provisioning/playbook.yml
+
+status "Provisioning Drupal VM inside Docker container..."
+docker exec $DRUPALVM_MACHINE_NAME env TERM=xterm ANSIBLE_FORCE_COLOR=true \
+  DRUPALVM_ENV=acquia \
+  ansible-playbook $DRUPALVM_PROJECT_ROOT/vendor/su-sws/drupal-caravan/provisioning/playbook.yml
+
+status "...done!"
+status "Visit the Drupal VM dashboard: http://$DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTP_PORT"
+

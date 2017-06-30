@@ -1,0 +1,30 @@
+# Docker container information
+docker_container_name: "{{ drupal_domain }}"
+docker_image_name: "{{ drupal_domain }}"
+docker_image_path: .
+
+# Path information
+drupal_core_path: "{{ drupal_composer_install_dir }}/docroot"
+ssh_home: /var/www/"{{ sitename }}"
+
+# DrupalVM override: do not install a vanilla Drupal site
+drupal_build_composer_project: false
+drupal_build_composer: false
+drupal_composer_path: false
+drupal_install_site: false
+
+# DrupalVM override: we need a drush alias in site-aliases
+# I think; this installs an alias in /root/.drush
+configure_drush_aliases: false
+
+installed_extras:
+  - drush
+  - selenium
+
+# Use PHP 5.6.
+php_version: "5.6"
+php_memory_limit: "1024M"
+
+# Set selenium version and do not install Chrome yet
+selenium_install_chrome: no
+selenium_version: 2.47.1
