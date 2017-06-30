@@ -1,2 +1,5 @@
 ---
+# find all behat tests and run all behat tests
+# save results and post them to a url
+
 docker exec $DRUPALVM_MACHINE_NAME sh -c "/var/www/earth/vendor/bin/behat -p local --colors --config $BEHAT_DEFAULT_CONFIG  /var/www/earth/tests/behat/features"
