@@ -9,8 +9,7 @@ DRUPALVM_CONFIG="vendor/su-sws/drupal-caravan/config/acquia.config.yml"
 DRUSH_ALIAS="vendor/su-sws/drupal-caravan/config/caravan.aliases.drushrc.php"
 
 # Copy config files into place
-ln -s $DRUPALVM_CONFIG vendor/geerlingguy/drupal-vm/acquia.config.yml
-cp $DRUSH_ALIAS /var/www/earth/drush/site-aliases/caravan.aliases.drushrc.php
+if [ -L vendor/geerlingguy/drupal-vm/acquia.config.yml ]; then echo "config already linked"; else ln -s $DRUPALVM_CONFIG vendor/geerlingguy/drupal-vm/acquia.config.yml; fi
 
 # Bake a Docker container with Drupal VM.
 
@@ -109,6 +108,9 @@ docker exec $DRUPALVM_MACHINE_NAME sudo ln -s /usr/local/share/chromedriver /usr
 docker exec $DRUPALVM_MACHINE_NAME sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
 status "Starting Selenium"
 docker exec $DRUPALVM_MACHINE_NAME service selenium start
+
+status "Copying site alias"
+docker exec $DRUPALVM_MACHINE_NAME sh -c "cp $DRUSH_ALIAS /var/www/earth/drush/site-aliases/caravan.aliases.drushrc.php"
 
 status "Installing Site, this make take a while"
 # Forcing this to resolve as true, so the script may continue.
