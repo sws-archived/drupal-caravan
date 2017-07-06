@@ -1,11 +1,13 @@
 ---
-- hosts: all
-  become: yes
+- hosts: local
+  connection: local
 
   vars_files:
     - vars/drupalvm.yml
-#
-#    - name: setup container
+
+  tasks:
+    - name: setup container
+      include: tasks/setup-container.yml
 #
 #    - name: setup BLT
 #      when: ENV=acquia

@@ -1,54 +1,40 @@
 ---
-# Set volume options.
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  volume_opts='rw,cached'
-else
-  volume_opts='rw'
-fi
+# https://github.com/ansible/ansible/issues/20492
+# Currently requires Python3
+- name: Ensure old module not present
+  pip:
+    name: docker-py
+    state: absent
+- name: Install pip modules on target box
+  pip:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - docker
+    - docker-compose
 
-if [ "$ENVIRONMENT" == "travis" ]; then
-  docker run --name=$DRUPALVM_MACHINE_NAME -d \
-    --add-host "$DRUPALVM_HOSTNAME":127.0.0.1 \
-    -v $PWD:$DRUPALVM_PROJECT_ROOT/:$volume_opts \
-    $OPTS \
-    geerlingguy/docker-$DISTRO-ansible:latest \
-    $INIT
-else
-  docker run --name=$DRUPALVM_MACHINE_NAME -d \
-    --add-host "$DRUPALVM_HOSTNAME":127.0.0.1 \
-    -v $PWD:$DRUPALVM_PROJECT_ROOT/:$volume_opts \
-    -p $DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTP_PORT:80 \
-    -p $DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTPS_PORT:443 \
-    -v $HOME/.ssh/acquia_id_rsa:/root/.ssh/id_rsa \
-    -v $HOME/.ssh/acquia_id_rsa.pub:/root/.ssh/id_rsa.pub \
-    $OPTS \
-    geerlingguy/docker-$DISTRO-ansible:latest \
-    $INIT
-fi
+- name: Create a container
+  docker_container:
+    name: "{{ drupalvm_machine_name }}"
+    image: "geerlingguy/docker-{{ distro }}-ansible:latest"
+    ports:
+      - "{{ drupalvm_ip_address }}:{{ drupalvm_http_port }}:80"
+      - "{{ drupalvm_ip_address }}:{{ drupalvm_https_port }}:433"
+    volumes:
+      - "{{ local_project_root }}:{{ drupalvm_project_root }}/:{{ volume_opts }}"
+      - "{{ home }}/.ssh/acquia_id_rsa:/root/.ssh/id_rsa"
+      - "{{ home }}/.ssh/acquia_id_rsa.pub:/root/.ssh/id_rsa.pub"
+    state: started
+    restart: yes
+    privileged: yes
+    command: /lib/systemd/systemd
 
-# Create Drupal directory.
-docker exec $DRUPALVM_MACHINE_NAME mkdir -p $DRUPALVM_PROJECT_ROOT
+- name: Create Drupal directory
+  command: docker exec --tty "{{ drupalvm_machine_name }}" mkdir -p "{{ drupalvm_project_root }}"
 
-# Set things up and run the Ansible playbook.
-status "Running setup playbook..."
-docker exec --tty $DRUPALVM_MACHINE_NAME env TERM=xterm \
-  ansible-playbook $DRUPALVM_PROJECT_ROOT/vendor/geerlingguy/drupal-vm/tests/test-setup.yml
+- name: Run DrupalVM setup playbook
+  command: docker exec --tty "{{ drupalvm_machine_name }}" env TERM=xterm ansible-playbook "{{ drupalvm_project_root }}"/vendor/geerlingguy/drupal-vm/tests/test-setup.yml
 
-
-# This should be:
-# - hosts: all
-#   become: yes
-#
-#   vars_files:
-#     - vars/drupalvm.yml
-#
-# - include: /var/www/earth/vendor/geerlingguy/drupal-vm/provisioning/playbook.yml
-
-status "Provisioning Drupal VM inside Docker container..."
-docker exec $DRUPALVM_MACHINE_NAME env TERM=xterm ANSIBLE_FORCE_COLOR=true \
-  DRUPALVM_ENV=acquia \
-  ansible-playbook $DRUPALVM_PROJECT_ROOT/vendor/su-sws/drupal-caravan/provisioning/playbook.yml
-
-status "...done!"
-status "Visit the Drupal VM dashboard: http://$DRUPALVM_IP_ADDRESS:$DRUPALVM_HTTP_PORT"
-
+# This is currently using the drupalvm default variables.  I need to include our overrides
+- name: Provision DrupalVM inside Docker container
+  command: docker exec "{{ drupalvm_machine_name }}" env TERM=xterm ANSIBLE_FORCE_COLOR=true ansible-playbook "{{ drupalvm_project_root}}"/vendor/geerlingguy/drupal-vm/provisioning/playbook.yml
