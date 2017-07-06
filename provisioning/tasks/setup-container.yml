@@ -35,6 +35,7 @@
 - name: Run DrupalVM setup playbook
   command: docker exec --tty "{{ drupalvm_machine_name }}" env TERM=xterm ansible-playbook "{{ drupalvm_project_root }}"/vendor/geerlingguy/drupal-vm/tests/test-setup.yml
 
-# This is currently using the drupalvm default variables.  I need to include our overrides
+# This is currently using the drupalvm default variables.  I need to include our overrides.
+# This should also check whether it's been run before and not run again if the container has already been configured.
 - name: Provision DrupalVM inside Docker container
   command: docker exec "{{ drupalvm_machine_name }}" env TERM=xterm ANSIBLE_FORCE_COLOR=true ansible-playbook "{{ drupalvm_project_root}}"/vendor/geerlingguy/drupal-vm/provisioning/playbook.yml

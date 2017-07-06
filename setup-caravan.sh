@@ -1,7 +1,11 @@
 #!/bin/bash
 
-# read -p "What should we call your site, ie. earth? " sitename
 echo "Let's see how this goes."
-# add sitename to hosts
+# Find where we are running the playbook from
+caravan_path=$(find . -type d -name "drupal-caravan")
 
-ansible-playbook -i "hosts" provisioning/playbook.yml -e "ansible_python_interpreter=/usr/local/bin/python3"
+
+
+ansible-playbook -i $caravan_path/hosts \
+  $caravan_path/provisioning/playbook.yml \
+  -e "ansible_python_interpreter=/usr/local/bin/python3"
