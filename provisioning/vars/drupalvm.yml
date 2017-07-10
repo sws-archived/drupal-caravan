@@ -4,16 +4,40 @@ docker_image_name: "{{ drupal_domain }}"
 docker_image_path: .
 
 # Variables required by setup-container.yml
-sitename: "earth"
+sitename: "se3_blt"
+drupal_domain: "se3_blt"
 distro: "ubuntu1604"
 drupalvm_ip_address: "192.168.88.88"
 drupalvm_http_port: "9000"
 drupalvm_https_port: "9001"
+drupalvm_ssh_port: "22"
 drupalvm_project_root: "/var/www/se3_blt"
 home: "/Users/kelliebrownell"
-drupalvm_machine_name: "earth"
+drupalvm_machine_name: "{{ drupal_domain }}"
 local_project_root: "/Users/kelliebrownell/Sites/se3_blt"
 drupalvm_user: "{{ ansible_env.SUDO_USER | default(ansible_env.USER, true) | default(ansible_user_id, true) }}"
+
+# Attempting to override DrupalVM default variables
+drupal_db_user: "{{ drupal_domain }}"
+drupal_db_password: "{{ drupal_domain }}"
+drupal_db_name: "{{ drupal_domain }}"
+
+apache_vhosts:
+  - servername: "{{ drupal_domain }}.local"
+    documentroot: "/var/www/{{ drupal_domain }}/docroot"
+    extra_parameters: |
+          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000/var/www/{{ drupal_domain }}/docroot:9000"
+
+mysql_databases:
+  - name: "{{ drupal_domain }}"
+    encoding: utf8
+    collation: utf8_general_ci
+
+mysql_users:
+  - name: "{{ drupal_domain }}"
+    host: "%"
+    password: "{{ drupal_domain }}"
+    prov: "{{ drupal_domain }}.*:ALL"
 
 # This comes from an if statement in DrupalVM's bake.sh script
 # The value should be 'rw,cached' if OSTYPE=="darwin"*

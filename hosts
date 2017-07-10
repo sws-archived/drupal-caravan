@@ -1,2 +1,5 @@
 [local]
 127.0.0.1   ansible_connection=local
+
+[docker-container]
+192.168.88.88

@@ -1,4 +1,10 @@
 ---
-- name: Ensure DrupalVM uses caravan config variables
+- name: Copy config template to remote container
+  command: docker exec "{{ drupalvm_machine_name }}" sh -c "cp {{ drupalvm_project_root }}/vendor/su-sws/drupal-caravan/provisioning/vars/drupalvm.yml {{ drupalvm_project_root}}/vendor/geerlingguy/drupal-vm/config.yml"
 
-- name: Run DrupalVM playbook on container
+- name: Run DrupalVM setup playbook
+  command: docker exec --tty "{{ drupalvm_machine_name }}" env TERM=xterm ansible-playbook "{{ drupalvm_project_root }}/vendor/geerlingguy/drupal-vm/tests/test-setup.yml"
+
+# This currently uses the default DrupalVM config file
+- name: Provision DrupalVM inside Docker container
+  command: docker exec --tty "{{ drupalvm_machine_name }}" env TERM=xterm ansible-playbook "{{ drupalvm_project_root}}/vendor/geerlingguy/drupal-vm/provisioning/playbook.yml"

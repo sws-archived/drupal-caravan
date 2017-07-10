@@ -1,4 +1,4 @@
-$aliases['earth.local'] = array(
+$aliases['se3_blt.local'] = array(
   'uri' => 'http://localhost',
-  'root' => '/var/www/earth/docroot',
+  'root' => '/var/www/se3_blt/docroot',
 );

@@ -20,6 +20,7 @@
     ports:
       - "{{ drupalvm_ip_address }}:{{ drupalvm_http_port }}:80"
       - "{{ drupalvm_ip_address }}:{{ drupalvm_https_port }}:433"
+      - "{{ drupalvm_ip_address }}:{{ drupalvm_ssh_port }}:22"
     volumes:
       - "{{ local_project_root }}:{{ drupalvm_project_root }}/:{{ volume_opts }}"
       - "{{ home }}/.ssh/acquia_id_rsa:/root/.ssh/id_rsa"
@@ -31,11 +32,3 @@
 
 - name: Create Drupal directory
   command: docker exec --tty "{{ drupalvm_machine_name }}" mkdir -p "{{ drupalvm_project_root }}"
-
-- name: Run DrupalVM setup playbook
-  command: docker exec --tty "{{ drupalvm_machine_name }}" env TERM=xterm ansible-playbook "{{ drupalvm_project_root }}"/vendor/geerlingguy/drupal-vm/tests/test-setup.yml
-
-# This is currently using the drupalvm default variables.  I need to include our overrides.
-# This should also check whether it's been run before and not run again if the container has already been configured.
-- name: Provision DrupalVM inside Docker container
-  command: docker exec "{{ drupalvm_machine_name }}" env TERM=xterm ANSIBLE_FORCE_COLOR=true ansible-playbook "{{ drupalvm_project_root}}"/vendor/geerlingguy/drupal-vm/provisioning/playbook.yml
