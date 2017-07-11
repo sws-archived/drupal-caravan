@@ -1,34 +1,10 @@
 ---
 # https://github.com/ansible/ansible/issues/20492
 # Currently requires Python3
-- name: Ensure old module not present
-  pip:
-    name: docker-py
-    state: absent
-- name: Install pip modules on target box
-  pip:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - docker
-    - docker-compose
-
 - name: Create a container
   docker_container:
-    name: "{{ drupalvm_machine_name }}"
-    image: "geerlingguy/docker-{{ distro }}-ansible:latest"
-    ports:
-      - "{{ drupalvm_ip_address }}:{{ drupalvm_http_port }}:80"
-      - "{{ drupalvm_ip_address }}:{{ drupalvm_https_port }}:433"
-      - "{{ drupalvm_ip_address }}:{{ drupalvm_ssh_port }}:22"
-    volumes:
-      - "{{ local_project_root }}:{{ drupalvm_project_root }}/:{{ volume_opts }}"
-      - "{{ home }}/.ssh/acquia_id_rsa:/root/.ssh/id_rsa"
-      - "{{ home }}/.ssh/acquia_id_rsa.pub:/root/.ssh/id_rsa.pub"
+    name: "{{ drupal_domain }}"
+    image: geerlingguy/docker-{{ distro }}-ansible:latest
     state: started
     restart: yes
-    privileged: yes
     command: /lib/systemd/systemd
-
-- name: Create Drupal directory
-  command: docker exec --tty "{{ drupalvm_machine_name }}" mkdir -p "{{ drupalvm_project_root }}"
