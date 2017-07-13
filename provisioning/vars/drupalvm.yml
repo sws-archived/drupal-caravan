@@ -11,6 +11,7 @@ drupalvm_ip_address: "192.168.88.88"
 drupalvm_http_port: "9000"
 drupalvm_https_port: "9001"
 drupalvm_ssh_port: "22"
+ssh_key_name: "acquia_id_rsa"
 drupalvm_project_root: "/var/www/se3_blt"
 drupal_core_path: "/var/www/se3_blt/docroot"
 home: "/Users/kelliebrownell"
@@ -22,6 +23,17 @@ drupalvm_user: "{{ ansible_env.SUDO_USER | default(ansible_env.USER, true) | def
 drupal_db_user: "{{ drupal_domain }}"
 drupal_db_password: "{{ drupal_domain }}"
 drupal_db_name: "{{ drupal_domain }}"
+
+apache_vhost_php_fpm_parameters: |
+    <FilesMatch \.php$>
+      SetHandler "proxy:fcgi://{{ php_fpm_listen }}"
+    </FilesMatch>
+
+apache_vhosts:
+  - servername: "{{ drupal_domain }}"
+    serveralias: "www.{{ drupal_domain }}"
+    documentroot: "{{ drupal_core_path }}"
+    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
 mysql_databases:
   - name: "{{ drupal_domain }}"

@@ -25,6 +25,10 @@ caravan_path=$(find . -type d -name "drupal-caravan")
 # Always output Ansible log in color
 export ANSIBLE_FORCE_COLOR=true
 
+echo "Running setup-host"
+ansible-playbook -i $caravan_path/hosts \
+  $caravan_path/provisioning/tasks/setup-host.yml
+
 echo "Running setup-container"
 ansible-playbook -i $caravan_path/hosts \
   $caravan_path/provisioning/tasks/setup-container.yml

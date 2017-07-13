@@ -3,7 +3,7 @@
   shell: "{{ drupalvm_project_root }}/vendor/acquia/blt/scripts/blt/install-alias.sh -y"
 
 - name: Add SSH key
-  shell: chmod 600 /root/.ssh/id_rsa
+  shell: chmod 600 "/root/.ssh/{{ ssh_key_name }}"
 
 #- name: Add key to SSH Agent
 #  command: eval "$(ssh-agent)"

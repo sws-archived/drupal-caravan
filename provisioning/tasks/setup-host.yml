@@ -1,25 +1,35 @@
 ---
-# From https://victorops.com/blog/automating-developer-environment-setup-osx-using-ansible-homebrew-docker/
-- name: Install Docker
-  homebrew_cask: name=docker state=present
+- hosts: 127.0.0.1
+  connection: local
 
-- name: Install docker-compose
-  homebrew: name=docker-compose state=installed
+  vars_files:
+    - ../vars/drupalvm.yml
 
-- name: Install python3
-  homebrew: name=python3 state=installed
+  tasks:
+  # From https://victorops.com/blog/automating-developer-environment-setup-osx-using-ansible-homebrew-docker/
+  - name: Install Docker
+    homebrew_cask: name=docker state=present
 
-- name: Set python3 as python alias
-  lineinfile:
-    path: ~/.bash_profile
-    insertafter: EOF
-    line: 'alias python=python3'
+  - name: Install docker-compose
+    homebrew: name=docker-compose state=installed
 
-- name: Add container IP to /etc/hosts
-  lineinfile:
-    path: /etc/hosts
-    insertafter: EOF
-    line: '192.168.88.88  se3_blt.local'
+  - name: Install docker-py
+    pip: name=docker-py state=present
 
-- name: Restart apache
-  command: brew services apache2 restart
+  - name: Install python3
+    homebrew: name=python3 state=installed
+
+  - name: Set python3 as python alias
+    lineinfile:
+      path: ~/.bash_profile
+      insertafter: EOF
+      line: "alias python='python3'"
+
+  - name: Add container IP to /etc/hosts
+    lineinfile:
+      path: /etc/hosts
+      insertafter: EOF
+      line: "192.168.88.88  se3_blt.local"
+
+  - name: Restart apache
+    command: brew services restart httpd22
