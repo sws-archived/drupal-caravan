@@ -9,9 +9,10 @@
   # From https://victorops.com/blog/automating-developer-environment-setup-osx-using-ansible-homebrew-docker/
   - name: Install Docker
     homebrew_cask: name=docker state=present
+    when: ansible_os_family == "Darwin"
 
   - name: Install docker-compose
-    homebrew: name=docker-compose state=installed
+    pip: name=docker-compose state=present
 
   - name: Install docker-py
     pip: name=docker-py state=present
@@ -30,6 +31,10 @@
       path: /etc/hosts
       insertafter: EOF
       line: "192.168.88.88  se3_blt.local"
+
+  - name: Add IP alias
+    command: sudo ifconfig lo0 alias 192.168.88.88/24
+    when: ansible_os_family == "Darwin"
 
   - name: Restart apache
     command: brew services restart httpd22
