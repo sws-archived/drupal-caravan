@@ -12,6 +12,9 @@
     docker_container:
       name: "{{ drupal_domain }}"
       image: geerlingguy/docker-{{ distro }}-ansible:latest
+      ports:
+        - "{{ drupalvm_ip_address }}:{{ drupalvm_http_port }}:80"
+        - "{{ drupalvm_ip_address }}:{{ drupalvm_https_port }}:433"
       volumes:
         - "{{ local_project_root }}:{{ drupalvm_project_root }}/:{{ volume_opts }}"
         - "{{ home }}/.ssh/acquia_id_rsa:/root/.ssh/id_rsa"

@@ -1,8 +1,19 @@
 #!/bin/bash
 
+# Requirements:
+# Python3 with: brew install python3
+# and adding to ~/.bash_profile: alias python='python3'
+# check with: python --version
+# pip modules: docker-py docker docker-compose
+# add to /etc/hosts file locally: 192.168.88.88  se3_blt.local
+
+
 echo "Let's see how this goes."
 # Find where we are running the playbook from
 caravan_path=$(find . -type d -name "drupal-caravan")
+
+# see if we can get Ansible to always output color
+export ANSIBLE_FORCE_COLOR=true
 
 echo "Running setup-container"
 # setup container with local connection
@@ -31,3 +42,8 @@ echo "Running playbook.yml"
 # Now, returning to a collection of plays.
 ansible-playbook -i $caravan_path/docker.py \
   $caravan_path/provisioning/playbook.yml
+
+echo "Visit http://se3_blt.local:9000"
+echo "Or log into your container with: docker exec -it se3_blt bash"
+echo "If you get Not Found, check /etc/apache2/sites-available/vhosts.conf"
+echo "And be sure the DocumentRoot is set to se3_blt."

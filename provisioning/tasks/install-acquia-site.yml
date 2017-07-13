@@ -1,3 +1,5 @@
 ---
 - name: install site with BLT
-  command: "{{ drupalvm_project_root }}/vendor/bin/blt local:refresh || true"
+  shell:
+    cmd: vendor/bin/blt local:refresh
+    chdir: "{{ drupalvm_project_root }}"

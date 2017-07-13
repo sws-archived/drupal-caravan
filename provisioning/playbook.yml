@@ -10,8 +10,8 @@
     - name: setup Acquia developer tools
       include: tasks/setup-acquia.yml
 
-#    - name: install site with BLT
-#      include: tasks/install-acquia-site.yml
+    - name: install site with BLT
+      include: tasks/install-acquia-site.yml
 #
 #    - name: setup Behat
 #      include: tasks/setup-behat.yml
