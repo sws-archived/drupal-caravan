@@ -1,10 +1,22 @@
 ---
-# https://github.com/ansible/ansible/issues/20492
-# Currently requires Python3
-- name: Create a container
-  docker_container:
-    name: "{{ drupal_domain }}"
-    image: geerlingguy/docker-{{ distro }}-ansible:latest
-    state: started
-    restart: yes
-    command: /lib/systemd/systemd
+- hosts: 127.0.0.1
+  connection: local
+
+  vars_files:
+    - ../vars/drupalvm.yml
+
+  tasks:
+  # https://github.com/ansible/ansible/issues/20492
+  # Currently requires Python3
+  - name: Create a container
+    docker_container:
+      name: "{{ drupal_domain }}"
+      image: geerlingguy/docker-{{ distro }}-ansible:latest
+      volumes:
+        - "{{ local_project_root }}:{{ drupalvm_project_root }}/:{{ volume_opts }}"
+        - "{{ home }}/.ssh/acquia_id_rsa:/root/.ssh/id_rsa"
+        - "{{ home }}/.ssh/acquia_id_rsa.pub:/root/.ssh/id_rsa.pub"
+      state: started
+      restart: yes
+      privileged: yes
+      command: /lib/systemd/systemd

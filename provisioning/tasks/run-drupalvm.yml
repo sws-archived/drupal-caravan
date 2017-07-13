@@ -1,10 +1,15 @@
 ---
-- name: Copy config template to remote container
-  command: docker exec "{{ drupalvm_machine_name }}" sh -c "cp {{ drupalvm_project_root }}/vendor/su-sws/drupal-caravan/provisioning/vars/drupalvm.yml {{ drupalvm_project_root}}/vendor/geerlingguy/drupal-vm/config.yml"
+- hosts: se3_blt
+  connection: docker
+  gather_facts: no
 
-- name: Run DrupalVM setup playbook
-  command: docker exec --tty "{{ drupalvm_machine_name }}" env TERM=xterm ansible-playbook "{{ drupalvm_project_root }}/vendor/geerlingguy/drupal-vm/tests/test-setup.yml"
+  vars_files:
+    - ../vars/drupalvm.yml
 
-# This currently uses the default DrupalVM config file
-- name: Provision DrupalVM inside Docker container
-  command: docker exec --tty "{{ drupalvm_machine_name }}" env TERM=xterm ansible-playbook "{{ drupalvm_project_root}}/vendor/geerlingguy/drupal-vm/provisioning/playbook.yml"
+  tasks:
+  - name: Copy config template to remote container
+    command: cp "{{ drupalvm_project_root }}/vendor/su-sws/drupal-caravan/provisioning/vars/drupalvm.yml" "{{ drupalvm_project_root}}/vendor/geerlingguy/drupal-vm/config.yml"
+
+- include: /Users/kelliebrownell/Sites/se3_blt/vendor/geerlingguy/drupal-vm/tests/test-setup.yml
+
+- include: /Users/kelliebrownell/Sites/se3_blt/vendor/geerlingguy/drupal-vm/provisioning/playbook.yml

@@ -1,0 +1,2 @@
+# Exclude retry files from repository
+*.retry

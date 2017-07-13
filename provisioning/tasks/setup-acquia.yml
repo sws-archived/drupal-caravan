@@ -1,18 +1,18 @@
 ---
 - name: Install BLT
-  command: docker exec "{{ drupalvm_machine_name }}" "{{ drupalvm_project_root }}"/vendor/acquia/blt/scripts/blt/install-alias.sh -y
+  command: "{{ drupalvm_project_root }}/vendor/acquia/blt/scripts/blt/install-alias.sh -y"
 
 - name: Add SSH key
-  command:  docker exec "{{ drupalvm_machine_name }}" sh -c "chmod 600 /root/.ssh/id_rsa"
+  command: chmod 600 /root/.ssh/id_rsa
 
 - name: Add key to SSH Agent
-  command: docker exec "{{ drupalvm_machine_name }}" sh -c 'eval "$(ssh-agent)"'
+  command: eval "$(ssh-agent)"
 
 # This step helps us avoid a prompt to verify new hosts
 - name: Add Acquia servers to known_hosts
-  command: docker exec "{{ drupalvm_machine_name }}" sh -c "ssh-keyscan earthstg.ssh.prod.acquia-sites.com >> /root/.ssh/known_hosts"
+  command: ssh-keyscan earthstg.ssh.prod.acquia-sites.com >> /root/.ssh/known_hosts
 
 # Once we are running these commands on an Ansible inventory,
 # We should change this to use the template module
 - name: Copying site aliases
-  command: docker exec "{{ drupalvm_machine_name }}" sh -c "cp {{ drupalvm_project_root }}/vendor/su-sws/drupal-caravan/provisioning/templates/caravan.aliases.drushrc.php {{ drupalvm_project_root }}/drush/site-aliases/caravan.aliases.drushrc.php"
+  command: cp "{{ drupalvm_project_root }}/vendor/su-sws/drupal-caravan/provisioning/templates/caravan.aliases.drushrc.php" "{{ drupalvm_project_root }}/drush/site-aliases/caravan.aliases.drushrc.php"
