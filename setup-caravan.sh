@@ -19,6 +19,22 @@ else
     echo "ansible is installed"
 fi
 
+if [ ! -x /usr/local/bin/docker ]; then
+    echo "installing docker via homebrew"
+    brew install docker
+else
+    echo "docker is installed"
+fi
+
+read -p "Have you started the Docker Application? " -n 1 -r
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+  continue
+else
+  echo "I'm afraid you can't continue until Docker is running on your machine."
+  exit
+fi
+
 # Find where we are running the playbook from
 caravan_path=$(find . -type d -name "drupal-caravan")
 
