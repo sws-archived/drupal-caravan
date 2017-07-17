@@ -1,10 +1,3 @@
 ---
 - name: Install BLT
   shell: "{{ drupalvm_project_root }}/vendor/bin/blt install-alias"
-
-# Once we are running these commands on an Ansible inventory,
-# We should change this to use the template module
-- name: Copying site aliases
-  template:
-    src: "{{ drupalvm_project_root }}/vendor/su-sws/drupal-caravan/provisioning/setup-container/templates/caravan.aliases.drushrc.php"
-    dest: "{{ drupalvm_project_root }}/drush/site-aliases/caravan.aliases.drushrc.php"

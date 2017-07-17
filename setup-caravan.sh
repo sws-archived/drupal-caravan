@@ -40,13 +40,12 @@ caravan_path=$(find . -type d -name "drupal-caravan")
 export ANSIBLE_FORCE_COLOR=true
 
 echo "Running localhost playbook"
-ansible-playbook -i $caravan_path/hosts \
+ansible-playbook -i $caravan_path/hosts -ask-become-pass \
   $caravan_path/provisioning/localhost-playbook.yml
 
 echo "Running container playbook"
 ansible-playbook -i $caravan_path/docker.py \
-  $caravan_path/container-playbook.yml \
-  -c docker
+  $caravan_path/container-playbook.yml
 
 echo "Visit http://se3_blt.local:9000"
 echo "Or log into your container with: docker exec -it se3_blt bash"

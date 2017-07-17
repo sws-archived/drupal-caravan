@@ -70,6 +70,7 @@ configure_drush_aliases: true
 installed_extras:
   - drush
   - selenium
+  - vim
 
 # Use PHP 5.6.
 php_version: "5.6"

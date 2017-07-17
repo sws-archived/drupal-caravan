@@ -15,19 +15,22 @@
 
 - name: Set python3 as python alias
   lineinfile:
-    path: ~/.bash_profile
+    dest: "~/.bash_profile"
     insertafter: EOF
     line: "alias python='python3'"
+    state: present
+
+- name: source the updated ~/.bash_profile file
+  command: source ~/.bash_profile
 
 - name: Add container IP to /etc/hosts
   lineinfile:
     path: /etc/hosts
     insertafter: EOF
     line: "192.168.88.88  se3_blt.local"
+  notify: restart Apache
 
 - name: Add IP alias
   command: sudo ifconfig lo0 alias 192.168.88.88/24
   when: ansible_os_family == "Darwin"
-
-- name: Restart apache
-  command: brew services restart httpd22
+  notify: restart Apache
