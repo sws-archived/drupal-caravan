@@ -6,17 +6,7 @@
     - ../vars/drupalvm.yml
 
   tasks:
-  # From https://victorops.com/blog/automating-developer-environment-setup-osx-using-ansible-homebrew-docker/
-  - name: Install Docker
-    homebrew_cask: name=docker state=present
-    when: ansible_os_family == "Darwin"
-
-  - name: Install docker-compose
-    pip: name=docker-compose state=present
-
-  - name: Install docker-py
-    pip: name=docker-py state=present
-
+    # Installed but needed to be linked, brew linkapps python3
   - name: Install python3
     homebrew: name=python3 state=installed
 
