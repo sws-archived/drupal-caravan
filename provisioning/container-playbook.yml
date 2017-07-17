@@ -1,0 +1,11 @@
+---
+- hosts: se3_blt
+  connection: docker
+  gather_facts: no
+
+  roles:
+    - run-drupalvm
+    - setup-acquia
+    - install-site
+    - setup-behat
+    - run-behat

@@ -41,22 +41,14 @@ caravan_path=$(find . -type d -name "drupal-caravan")
 # Always output Ansible log in color
 export ANSIBLE_FORCE_COLOR=true
 
-echo "Running setup-host"
+echo "Running localhost playbook"
 ansible-playbook -i $caravan_path/hosts \
-  $caravan_path/provisioning/tasks/setup-host.yml
+  $caravan_path/provisioning/localhost-playbook.yml
 
-echo "Running setup-container"
-ansible-playbook -i $caravan_path/hosts \
-  $caravan_path/provisioning/tasks/setup-container.yml
-
-echo "Running run-drupalvm"
+echo "Running container playbook"
 ansible-playbook -i $caravan_path/docker.py \
-  $caravan_path/provisioning/tasks/run-drupalvm.yml \
+  $caravan_path/container-playbook.yml \
   -c docker
-
-echo "Running playbook.yml"
-ansible-playbook -i $caravan_path/docker.py \
-  $caravan_path/provisioning/playbook.yml
 
 echo "Visit http://se3_blt.local:9000"
 echo "Or log into your container with: docker exec -it se3_blt bash"
