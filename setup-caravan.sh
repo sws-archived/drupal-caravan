@@ -41,14 +41,8 @@ caravan_path=$(find . -type d -name "drupal-caravan")
 export ANSIBLE_FORCE_COLOR=true
 
 echo "Running localhost playbook"
-ansible-playbook -i $caravan_path/hosts -K \
-  $caravan_path/provisioning/localhost-playbook.yml
-
-# Specify connection here because the DrupalVM playbooks
-# rely on these variables only, not those in container-playbook.yml
-echo "Running container playbook"
-ansible-playbook -i $caravan_path/docker.py \
-  $caravan_path/provisioning/container-playbook.yml \
+ansible-playbook -i $caravan_path/docker.py -K \
+  $caravan_path/provisioning/playbook.yml \
   -c docker
 
 echo "Visit http://se3_blt.local:9000"

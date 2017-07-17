@@ -1,4 +1,4 @@
 ---
-- include: "{{ local_project_root }}/vendor/geerlingguy/drupal-vm/tests/test-setup.yml"
-
-- include: "{{ local_project_root }}/vendor/geerlingguy/drupal-vm/provisioning/playbook.yml"
+- name: Run DrupalVM
+  include_role:
+    name: geerlingguy.git

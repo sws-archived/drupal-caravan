@@ -1,0 +1,33 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+
+  vars_files:
+    - ../personal_vars.yml
+
+  roles:
+    - setup-localhost
+    - setup-container
+
+  handlers:
+    - name: restart Apache
+      command: brew services restart httpd22
+
+# Have not yet found a great way to inject a vars file
+# Copying vars file to geerlingguy/drupal-vm/config.yml
+- include: ../../../geerlingguy/drupal-vm/tests/test-setup.yml
+- include: ../../../geerlingguy/drupal-vm/provisioning/playbook.yml
+
+- hosts: se3_blt
+  connection: docker
+  gather_facts: no
+  become: yes
+  user: root
+
+  vars_files:
+    - ../personal_vars.yml
+    - config.yml
+
+  roles:
+    - setup-acquia
+    - install-site

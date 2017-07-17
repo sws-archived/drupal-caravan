@@ -19,3 +19,8 @@
   become: true
   when: ansible_os_family == "Darwin"
   notify: restart Apache
+
+- name: Copy over DrupalVM var file
+  copy:
+    src: "{{ local_project_root }}/vendor/su-sws/drupal-caravan/provisioning/config.yml"
+    dest: "{{ local_project_root }}/vendor/geerlingguy/drupal-vm/config.yml"
