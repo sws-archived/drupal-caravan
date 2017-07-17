@@ -1,7 +1,17 @@
 ---
+- name: Install pip
+  pip: name={{ item }}
+  sudo: true
+  with_items:
+   - docker-py
+   - docker-compose
+
 # Installed but needed to be linked, brew linkapps python3
 - name: Install python3
-  homebrew: name=python3 state=installed
+  homebrew:
+    name: python3
+    state: present
+    update_homebrew: yes
 
 - name: Set python3 as python alias
   lineinfile:

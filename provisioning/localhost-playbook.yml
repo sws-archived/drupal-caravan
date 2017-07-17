@@ -2,6 +2,9 @@
 - hosts: 127.0.0.1
   connection: local
 
+  vars_files:
+    - ../personal_vars.yml
+
   roles:
     - setup-localhost
     - setup-container

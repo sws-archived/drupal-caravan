@@ -3,36 +3,34 @@
 echo "Let's see how this goes."
 
 # Assuming local development on OSX.
-# Install Homebrew if needed and Ansible if needed.
 # From https://victorops.com/blog/automating-developer-environment-setup-osx-using-ansible-homebrew-docker/
 if [ ! -x /usr/local/bin/brew ]; then
-    echo "installing homebrew"
+    echo "Installing Homebrew"
     /usr/bin/env ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 else
-    echo "homebrew is installed"
+    echo "Homebrew is already installed."
 fi
 
 if [ ! -x /usr/local/bin/ansible ]; then
-    echo "installing ansible via homebrew"
+    echo "Installing Ansible via Homebrew."
     brew install ansible
 else
-    echo "ansible is installed"
+    echo "Ansible is already installed."
 fi
 
 if [ ! -x /usr/local/bin/docker ]; then
-    echo "installing docker via homebrew"
-    brew install docker
+  echo "Installing Docker via wget"
+  wget https://download.docker.com/mac/stable/Docker.dmg ~/Downloads/.
 else
-    echo "docker is installed"
-fi
-
-read -p "Have you started the Docker Application? " -n 1 -r
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-  continue
-else
-  echo "I'm afraid you can't continue until Docker is running on your machine."
-  exit
+  echo "Find Docker.dmg in your Downloads directory and click to install."
+  read -p "Have you started the Docker Application? " -n 1 -r
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+    continue
+  else
+    echo "I'm afraid you can't continue until Docker is running on your machine."
+    exit
+  fi
 fi
 
 # Find where we are running the playbook from

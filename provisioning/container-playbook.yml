@@ -3,6 +3,9 @@
   connection: docker
   gather_facts: no
 
+  vars_files:
+    - ../personal_vars.yml
+
   roles:
     - run-drupalvm
     - setup-acquia

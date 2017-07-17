@@ -1,18 +1,10 @@
 ---
 - name: Install BLT
-  shell: "{{ drupalvm_project_root }}/vendor/acquia/blt/scripts/blt/install-alias.sh -y"
-
-- name: Add SSH key
-  shell: chmod 600 /root/.ssh/id_rsa
-
-#- name: Add key to SSH Agent
-#  command: eval "$(ssh-agent)"
-
-# This step helps us avoid a prompt to verify new hosts
-- name: Add Acquia servers to known_hosts
-  shell: ssh-keyscan earthstg.ssh.prod.acquia-sites.com >> /root/.ssh/known_hosts
+  shell: "{{ drupalvm_project_root }}/vendor/bin/blt install-alias"
 
 # Once we are running these commands on an Ansible inventory,
 # We should change this to use the template module
 - name: Copying site aliases
-  shell: cp "{{ drupalvm_project_root }}/vendor/su-sws/drupal-caravan/provisioning/templates/caravan.aliases.drushrc.php" "{{ drupalvm_project_root }}/drush/site-aliases/caravan.aliases.drushrc.php"
+  template:
+    src: "{{ drupalvm_project_root }}/vendor/su-sws/drupal-caravan/provisioning/setup-container/templates/caravan.aliases.drushrc.php"
+    dest: "{{ drupalvm_project_root }}/drush/site-aliases/caravan.aliases.drushrc.php"

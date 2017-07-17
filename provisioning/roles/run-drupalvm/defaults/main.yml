@@ -63,7 +63,9 @@ drupal_install_site: false
 
 # DrupalVM override: we need a drush alias in site-aliases
 # I think; this installs an alias in /root/.drush
-configure_drush_aliases: false
+# But it would be nice if blt could find the alias in /root/.drush
+# So that we wouldn't have to touch the build repo
+configure_drush_aliases: true
 
 installed_extras:
   - drush
