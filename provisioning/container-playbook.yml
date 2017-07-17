@@ -1,16 +1,17 @@
 ---
+- include: "../../../geerlingguy/drupal-vm/tests/test-setup.yml"
+- include: "../../../geerlingguy/drupal-vm/provisioning/playbook.yml"
+
 - hosts: se3_blt
   connection: docker
   gather_facts: no
   become: yes
-  remote-user: root
+  user: root
 
   vars_files:
     - ../personal_vars.yml
+    - vars.yml
 
   roles:
-    - run-drupalvm
     - setup-acquia
     - install-site
-    - setup-behat
-    - run-behat

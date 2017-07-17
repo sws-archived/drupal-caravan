@@ -1,7 +1,6 @@
 ---
 - hosts: 127.0.0.1
   connection: local
-  become: yes
 
   vars_files:
     - ../personal_vars.yml
@@ -12,4 +11,4 @@
 
   handlers:
     - name: restart Apache
-      service: name=apache2 state=restarted
+      command: brew services restart httpd22

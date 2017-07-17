@@ -1,15 +1,4 @@
 ---
-- hosts: se3_blt
-  connection: docker
-  gather_facts: no
+- include: "{{ local_project_root }}/vendor/geerlingguy/drupal-vm/tests/test-setup.yml"
 
-  vars_files:
-    - ../vars/drupalvm.yml
-
-  tasks:
-  - name: Copy config template to remote container
-    command: cp "{{ drupalvm_project_root }}/vendor/su-sws/drupal-caravan/provisioning/vars/drupalvm.yml" "{{ drupalvm_project_root}}/vendor/geerlingguy/drupal-vm/config.yml"
-
-- include: /Users/kelliebrownell/Sites/se3_blt/vendor/geerlingguy/drupal-vm/tests/test-setup.yml
-
-- include: /Users/kelliebrownell/Sites/se3_blt/vendor/geerlingguy/drupal-vm/provisioning/playbook.yml
+- include: "{{ local_project_root }}/vendor/geerlingguy/drupal-vm/provisioning/playbook.yml"

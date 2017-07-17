@@ -4,7 +4,7 @@
 - name: Create a container
   docker_container:
     name: "{{ drupal_domain }}"
-    image: geerlingguy/docker-{{ distro }}-ansible:latest
+    image: "geerlingguy/docker-{{ distro }}-ansible:latest"
     ports:
       - "{{ drupalvm_ip_address }}:{{ drupalvm_http_port }}:80"
       - "{{ drupalvm_ip_address }}:{{ drupalvm_https_port }}:433"
