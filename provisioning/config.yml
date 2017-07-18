@@ -16,7 +16,7 @@ drupalvm_project_root: "/var/www/se3_blt"
 drupal_vhost_path: "/var/www/se3_blt/docroot"
 home: "/Users/kelliebrownell"
 drupalvm_machine_name: "{{ drupal_domain }}"
-local_project_root: "/Users/kelliebrownell/Sites/se3_blt"
+local_project_root: "/Users/jgknox/Sites/stanford-acquia/se3_blt"
 drupalvm_user: "{{ ansible_env.SUDO_USER | default(ansible_env.USER, true) | default(ansible_user_id, true) }}"
 
 # Attempting to override DrupalVM default variables
