@@ -16,6 +16,3 @@
     restart: yes
     privileged: yes
     command: /lib/systemd/systemd
-
-- name: Change key permissions
-  command: chmod 600 /root/.ssh/id_rsa
