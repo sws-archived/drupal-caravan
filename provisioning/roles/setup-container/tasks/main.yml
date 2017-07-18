@@ -10,7 +10,12 @@
       - "{{ drupalvm_ip_address }}:{{ drupalvm_https_port }}:433"
     volumes:
       - "{{ local_project_root }}:{{ drupalvm_project_root }}/:{{ volume_opts }}"
+      - "{{ home }}/.ssh/{{ ssh_key_name }}:/root/.ssh/id_rsa"
+      - "{{ home }}/.ssh/{{ ssh_key_name }}.pub:/root/.ssh/id_rsa.pub"
     state: started
     restart: yes
     privileged: yes
     command: /lib/systemd/systemd
+
+- name: Change key permissions
+  command: chmod 600 /root/.ssh/id_rsa
