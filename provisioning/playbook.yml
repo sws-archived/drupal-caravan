@@ -18,7 +18,10 @@
 - include: ../../../geerlingguy/drupal-vm/tests/test-setup.yml hosts="{{ sitename }}"
 - include: ../../../geerlingguy/drupal-vm/provisioning/playbook.yml hosts="{{ sitename }}"
 
-- hosts: "{{ sitename }}"
+# I'd love to set this as a variable, but then why, one might ask
+# use docker.py?  I assume it includes useful extra_vars related
+# to communicating with this host.
+- hosts: se3_blt
   connection: docker
   gather_facts: no
   become: yes
