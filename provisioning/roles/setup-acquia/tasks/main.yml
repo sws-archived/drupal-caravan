@@ -1,3 +1,12 @@
 ---
 - name: Install BLT
   shell: "{{ drupalvm_project_root }}/vendor/bin/blt install-alias"
+
+- name: source .bashrc after installing BLT alias
+  command: source /root/.bashrc
+
+- name: Change key permissions
+  command: chmod 600 /root/.ssh/id_rsa
+
+- name: Save Acquia server as known_host
+  command: ssh-keyscan earthstg.ssh.prod.acquia-sites.com >> /root/.ssh/known_hosts

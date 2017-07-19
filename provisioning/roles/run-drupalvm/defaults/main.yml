@@ -14,9 +14,9 @@ drupalvm_ssh_port: "22"
 ssh_key_name: "acquia_id_rsa"
 drupalvm_project_root: "/var/www/se3_blt"
 drupal_vhost_path: "/var/www/se3_blt/docroot"
-home: "/Users/kelliebrownell"
+home: "/Users/jgknox"
 drupalvm_machine_name: "{{ drupal_domain }}"
-local_project_root: "/Users/kelliebrownell/Sites/se3_blt"
+local_project_root: "/Users/jgknox/Sites/se3_blt"
 drupalvm_user: "{{ ansible_env.SUDO_USER | default(ansible_env.USER, true) | default(ansible_user_id, true) }}"
 
 # Attempting to override DrupalVM default variables
