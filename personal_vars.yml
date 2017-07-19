@@ -1,8 +1,0 @@
-# Customize variables to your project and local setup preferences
-sitename: "se3_blt"
-drupal_domain: "se3_blt"
-ssh_key_name: "acquia_id_rsa"
-drupalvm_project_root: "/var/www/se3_blt"
-drupal_vhost_path: "/var/www/se3_blt/docroot"
-home: "/Users/jgknox"
-local_project_root: "/Users/jgknox/Sites/stanford-acquia/se3_blt"

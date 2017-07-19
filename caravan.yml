@@ -1,0 +1,5 @@
+######### REQUIRES PERSONALIZATION
+sitename: ""
+home: ""
+local_project_root: ""
+ssh_key_name: "acquia_id_rsa"

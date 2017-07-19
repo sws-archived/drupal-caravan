@@ -3,7 +3,7 @@
   connection: local
 
   vars_files:
-    - ../personal_vars.yml
+    - ../caravan.yml
 
   roles:
     - setup-localhost

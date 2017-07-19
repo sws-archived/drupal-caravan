@@ -1,24 +1,3 @@
-# Docker container information
-docker_container_name: "{{ drupal_domain }}"
-docker_image_name: "{{ drupal_domain }}"
-docker_image_path: .
-
-# Variables required by setup-container.yml
-sitename: "se3_blt"
-drupal_domain: "se3_blt"
-distro: "ubuntu1604"
-drupalvm_ip_address: "192.168.88.88"
-drupalvm_http_port: "9000"
-drupalvm_https_port: "9001"
-drupalvm_ssh_port: "22"
-ssh_key_name: "acquia_id_rsa"
-drupalvm_project_root: "/var/www/se3_blt"
-drupal_vhost_path: "/var/www/se3_blt/docroot"
-home: "/Users/jgknox"
-drupalvm_machine_name: "{{ drupal_domain }}"
-local_project_root: "/Users/jgknox/Sites/stanford-acquia/se3_blt"
-drupalvm_user: "{{ ansible_env.SUDO_USER | default(ansible_env.USER, true) | default(ansible_user_id, true) }}"
-
 # Attempting to override DrupalVM default variables
 drupal_db_user: "{{ drupal_domain }}"
 drupal_db_password: "{{ drupal_domain }}"
@@ -53,7 +32,7 @@ volume_opts: "rw,cached"
 
 # Path information
 drupal_core_path: "{{ drupal_composer_install_dir }}/docroot"
-ssh_home: /var/www/"{{ sitename }}"
+ssh_home: /var/www/"{{ drupal_domain }}"
 
 # DrupalVM override: do not install a vanilla Drupal site
 drupal_build_composer_project: false
@@ -70,7 +49,6 @@ configure_drush_aliases: true
 installed_extras:
   - drush
   - selenium
-  - vim
 
 # Use PHP 5.6.
 php_version: "5.6"

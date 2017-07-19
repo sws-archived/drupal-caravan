@@ -1,4 +1,4 @@
 ---
-- name: Run DrupalVM
-  include_role:
-    name: geerlingguy.git
+- template:
+    src: config.yml.j2
+    dest: "{{ local_project_root }}/vendor/geerlingguy/drupal-vm/config.yml"
