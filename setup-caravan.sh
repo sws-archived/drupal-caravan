@@ -9,7 +9,6 @@ else
   exit
 fi
 
-
 echo "Let's see how this goes."
 
 # Assuming local development on OSX.
@@ -46,10 +45,6 @@ fi
 
 # Find where we are running the playbook from
 caravan_path=$(find . -type d -name "drupal-caravan")
-
-# Write variables to caravan.yml
-sed -i "s/home:/home:$HOME/" caravan.yml
-sed -i "s/local_project_root:/local_project_root:$PWD/" caravan.yml
 
 # Always output Ansible log in color
 export ANSIBLE_FORCE_COLOR=true

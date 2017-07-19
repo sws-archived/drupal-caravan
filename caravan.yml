@@ -1,5 +1,7 @@
 ######### REQUIRES PERSONALIZATION
-sitename: ""
-home: ""
-local_project_root: ""
+sitename: "se3_blt"
+# I want to set these variables with $HOME and $PWD
+# But there are many things I want to do.
+home: "/Users/kelliebrownell"
+local_project_root: "/Users/kelliebrownell/Sites/se3_blt"
 ssh_key_name: "acquia_id_rsa"
