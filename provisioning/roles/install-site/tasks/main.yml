@@ -3,5 +3,5 @@
 # my BLT version
 - name: install site with BLT
   shell:
-    cmd: vendor/bin/blt sync:refresh -Dsync.files=true
+    cmd: vendor/bin/blt sync:refresh -Dsync.files=true -y
     chdir: "{{ drupalvm_project_root }}"
