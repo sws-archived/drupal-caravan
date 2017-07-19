@@ -54,5 +54,5 @@ ansible-playbook -i $caravan_path/provisioning/docker.py -K \
   $caravan_path/provisioning/playbook.yml \
   -c docker
 
-echo "Visit http://se3_blt.local:9000"
-echo "Or log into your container with: docker exec -it se3_blt bash"
+echo "Visit http://[SITENAME].local:9000"
+echo "Or log into your container with: docker exec -it [SITENAME] bash"

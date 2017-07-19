@@ -10,7 +10,7 @@
   lineinfile:
     path: /etc/hosts
     insertafter: EOF
-    line: "192.168.88.88  se3_blt.local"
+    line: "192.168.88.88  {{ sitename }}.local"
   notify: restart Apache
   become: true
 
