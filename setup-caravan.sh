@@ -1,15 +1,19 @@
 #!/bin/bash
 echo "Let's see how this goes."
 
-echo "Install pip and upgrade systemtools"
-if [ -z $(python -c "import pip") ]; then sudo easy_install pip; fi
-pip install --upgrade pip setuptools
-
 echo "Install python packages"
-if [ -z $(python -c "import ppyaml") ]; then sudo pip install ppyaml; fi
-if [ -z $(python -c "import ansible") ]; then sudo pip install ansible; fi
-if [ -z $(python -c "import docker-py") ]; then sudo pip install docker-py; fi
-if [ -z $(python -c "import docker-compose") ]; then sudo pip install docker-compose; fi
+if [ ! -f /usr/local/bin/pip ]; then sudo easy_install pip; fi
+# Leaving this off for now, but may be necessary
+# on old machines
+# sudo pip install --upgrade pip setuptools --ignore-installed
+# if [ -z $(python -c "import pyyaml") ]; then sudo pip install pyyaml; fi
+
+ansible_package=$(pip list --format=legacy | grep "ansible")
+dockerpy_package=$(pip list --format=legacy | grep "docker-py")
+dockercompose_package=$(pip list --format=legacy | grep "docker-compose")
+if [ -z "$ansible_package" ]; then sudo pip install ansible -y; fi
+if [ -z "$dockerpy_package" ]; then sudo pip install docker-py -y; fi
+if [ -z "$dockercompose_package" ]; then sudo pip install docker-compose -y; fi
 
 if [ ! -x /usr/local/bin/docker ]; then
   echo "Installing Docker via wget"

@@ -29,6 +29,7 @@
 
   vars_files:
     - ../caravan.yml
+    - roles/setup-container/defaults/main.yml
 
   roles:
     - setup-acquia

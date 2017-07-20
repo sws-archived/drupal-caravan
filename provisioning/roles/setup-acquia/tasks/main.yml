@@ -3,4 +3,4 @@
   command: chmod 600 /root/.ssh/id_rsa
 
 - name: Save Acquia server as known_host
-  command: ssh-keyscan earthstg.ssh.prod.acquia-sites.com >> /root/.ssh/known_hosts
+  shell: ssh-keyscan earthstg.ssh.prod.acquia-sites.com >> /root/.ssh/known_hosts
