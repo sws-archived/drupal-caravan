@@ -1,4 +1,4 @@
 ---
 - template:
     src: config.yml.j2
-    dest: "{{ local_project_root }}/vendor/geerlingguy/drupal-vm/config.yml"
+    dest: "{{ drupalvm_project_root }}/vendor/geerlingguy/drupal-vm/config.yml"

@@ -4,3 +4,18 @@
 
 - name: Save Acquia server as known_host
   shell: ssh-keyscan earthstg.ssh.prod.acquia-sites.com >> /root/.ssh/known_hosts
+
+- name: Setup drupal-scaffold
+  shell:
+    cmd: composer drupal-scaffold
+    chdir: "{{ drupalvm_project_root }}"
+
+- name: Setup site settings files
+  shell:
+    cmd: vendor/bin/blt "{{ item }}"
+    chdir: "{{ drupalvm_project_root }}"
+    with_items:
+      - "setup:settings"
+      - "setup:build"
+      - "setup:git-hooks"
+      - "setup:hash-salt"
