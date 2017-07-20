@@ -1,31 +1,15 @@
 #!/bin/bash
-
-read -p "Have you saved a value for sitename in caravan.yml? " -n 1 -r
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-  continue
-else
-  echo "Please go do that now."
-  exit
-fi
-
 echo "Let's see how this goes."
 
-# Assuming local development on OSX.
-# From https://victorops.com/blog/automating-developer-environment-setup-osx-using-ansible-homebrew-docker/
-if [ ! -x /usr/local/bin/brew ]; then
-  echo "Installing Homebrew"
-  /usr/bin/env ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-else
-  echo "Homebrew is already installed."
-fi
+echo "Install pip and upgrade systemtools"
+if [ -z $(python -c "import pip") ]; then sudo easy_install pip; fi
+pip install --upgrade pip setuptools
 
-if [ ! -x /usr/local/bin/ansible ]; then
-  echo "Installing Ansible via Homebrew."
-  brew install ansible
-else
-  echo "Ansible is already installed."
-fi
+echo "Install python packages"
+if [ -z $(python -c "import ppyaml") ]; then sudo pip install ppyaml; fi
+if [ -z $(python -c "import ansible") ]; then sudo pip install ansible; fi
+if [ -z $(python -c "import docker-py") ]; then sudo pip install docker-py; fi
+if [ -z $(python -c "import docker-compose") ]; then sudo pip install docker-compose; fi
 
 if [ ! -x /usr/local/bin/docker ]; then
   echo "Installing Docker via wget"

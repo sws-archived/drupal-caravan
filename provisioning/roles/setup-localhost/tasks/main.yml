@@ -1,11 +1,4 @@
 ---
-- name: Install pip
-  pip: name={{ item }}
-  become: true
-  with_items:
-   - docker-py
-   - docker-compose
-
 - name: Add container IP to /etc/hosts
   lineinfile:
     path: /etc/hosts

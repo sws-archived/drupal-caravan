@@ -1,3 +1,4 @@
 # Exclude files from repository
+*.DS_Store
 *.retry
 caravan.yml
