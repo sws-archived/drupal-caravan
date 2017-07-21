@@ -3,28 +3,6 @@ drupal_db_user: "{{ drupal_domain }}"
 drupal_db_password: "{{ drupal_domain }}"
 drupal_db_name: "{{ drupal_domain }}"
 
-apache_vhost_php_fpm_parameters: |
-    <FilesMatch \.php$>
-      SetHandler "proxy:fcgi://{{ php_fpm_listen }}"
-    </FilesMatch>
-
-apache_vhosts:
-  - servername: "{{ drupal_domain }}"
-    serveralias: "www.{{ drupal_domain }}"
-    documentroot: "{{ drupal_vhost_path }}"
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
-
-mysql_databases:
-  - name: "{{ drupal_domain }}"
-    encoding: utf8
-    collation: utf8_general_ci
-
-mysql_users:
-  - name: "{{ drupal_domain }}"
-    host: "%"
-    password: "{{ drupal_domain }}"
-    prov: "{{ drupal_domain }}.*:ALL"
-
 # This comes from an if statement in DrupalVM's bake.sh script
 # The value should be 'rw,cached' if OSTYPE=="darwin"*
 # otherwise, it should be 'rw'.

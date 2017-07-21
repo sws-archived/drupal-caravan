@@ -13,6 +13,19 @@
     - name: restart Apache
       command: brew services restart httpd22
 
+- hosts: se3_blt
+  connection: docker
+  gather_facts: no
+  become: yes
+  user: root
+
+  vars_files:
+    - ../caravan.yml
+    - roles/setup-container/defaults/main.yml
+
+  roles:
+    - run-drupalvm
+
 # Have not yet found a great way to inject a vars file
 # Copying vars file to geerlingguy/drupal-vm/config.yml
 - include: ../../../geerlingguy/drupal-vm/tests/test-setup.yml hosts="{{ sitename }}"

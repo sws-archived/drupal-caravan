@@ -1,7 +1,7 @@
 ---
-# I need to change this to sync:refresh once I update
-# my BLT version
+# Removing `-Dsync.files=true` as this is still requiring
+# user input, even after testing with BLT Issue#1810.
 - name: install site with BLT
   shell:
-    cmd: vendor/bin/blt sync:refresh -Dsync.files=true -y
+    cmd: vendor/bin/blt sync:refresh -y
     chdir: "{{ drupalvm_project_root }}"

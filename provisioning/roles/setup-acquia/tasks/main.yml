@@ -12,10 +12,10 @@
 
 - name: Setup site settings files
   shell:
-    cmd: vendor/bin/blt "{{ item }}"
+    cmd: vendor/bin/blt {{ item }}
     chdir: "{{ drupalvm_project_root }}"
-    with_items:
-      - "setup:settings"
-      - "setup:build"
-      - "setup:git-hooks"
-      - "setup:hash-salt"
+  with_items:
+    - 'setup:settings'
+    # - 'setup:build'
+    - 'setup:git-hooks'
+    - 'setup:hash-salt'
