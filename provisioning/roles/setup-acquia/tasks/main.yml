@@ -10,12 +10,19 @@
     cmd: composer drupal-scaffold
     chdir: "{{ drupalvm_project_root }}"
 
+# See: https://github.com/acquia/blt/issues/1033
+# PHP extension for VM's
+- name: Install bz2 for PHP5.6
+  apt:
+    name: php5.6-bz2
+    state: present
+
 - name: Setup site settings files
   shell:
     cmd: vendor/bin/blt {{ item }}
     chdir: "{{ drupalvm_project_root }}"
   with_items:
     - 'setup:settings'
-    # - 'setup:build'
+    - 'setup:build'
     - 'setup:git-hooks'
     - 'setup:hash-salt'
