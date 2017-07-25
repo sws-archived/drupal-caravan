@@ -1,7 +1,33 @@
-######### REQUIRES PERSONALIZATION
-sitename: "se3_blt"
-# I want to set these variables with $HOME and $PWD
-# But there are many things I want to do.
-home: "[LOCAL HOME]"
-local_project_root: "[LOCAL PROJECT ROOT]"
-ssh_key_name: "acquia_id_rsa"
+# Config file for Drupal Caravan
+# https://github.com/SU-SWS/drupal-caravan
+# ========================================
+
+# SITENAME:
+# Enter a nickname for your project. Use underscores, not hyphens.
+# This value will be used to determine a number of variables in the created
+# environment, for example, container name, database name, webroot, etc.
+# Example:
+# se3_blt, earth
+#
+# HOME_PATH:
+# Enter the absolute path of your user's local, home directory.
+# Example:
+# /Users/johndoe, /usr/janedoe
+#
+# LOCAL_PROJECT_PATH:
+# Enter the absolute path to your local copy of the build repository.
+# Do not include /docroot in the path.  This directory should include
+# the composer.json project for this project.
+# Example:
+# /Users/johndoe/Sites/{{ sitename }}, /var/www/{{ sitename }}
+#
+# SSH_KEY_NAME:
+# Enter the filename of an ssh key that gives you access to cloud hosted
+# copies of the production database.
+# Example:
+# acquia_id_rsa
+
+sitename: ""
+home_path: ""
+local_project_path: ""
+ssh_key_name: ""
