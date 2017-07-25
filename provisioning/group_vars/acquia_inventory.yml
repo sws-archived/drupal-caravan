@@ -1,0 +1,16 @@
+Defaults for running Drupal Caravan with Acquia
+https://github.com/SU-SWS/drupal-caravan
+===============================================
+
+These default values will be used when working
+with a project hosted by Acquia. In other words,
+when running a playbook against any host in the
+acquia inventory group.
+
+CUSTOM_VAR:
+Description
+Example:
+foo, bar
+
+[acquia]
+custom_var = ""
