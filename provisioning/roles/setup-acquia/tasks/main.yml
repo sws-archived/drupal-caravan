@@ -21,7 +21,8 @@
 # Acquia BLT in vendor directory.
 #
 # KNOWN ISSUES:
-# --
+# BLT has a requirement not satisfied by composer, ie. php7.0-bz2
+# See: https://github.com/acquia/blt/issues/1033
 
 - name: Change key permissions
   command: chmod 600 /root/.ssh/id_rsa
