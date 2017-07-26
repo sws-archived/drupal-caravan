@@ -1,18 +1,21 @@
 ---
+# STATE
+
 # https://github.com/ansible/ansible/issues/20492
 # Currently requires Python3
 - name: Create a container
   docker_container:
-    name: "{{ drupal_domain }}"
+    name: "{{ sitename }}"
     image: "geerlingguy/docker-{{ distro }}-ansible:latest"
     ports:
-      - "{{ drupalvm_ip_address }}:{{ drupalvm_http_port }}:80"
-      - "{{ drupalvm_ip_address }}:{{ drupalvm_https_port }}:433"
+      - "{{ ip_address }}:{{ local_http_port }}:80"
+      - "{{ ip_address }}:{{ local_https_port }}:433"
     volumes:
-      - "{{ local_project_root }}:{{ drupalvm_project_root }}/:{{ volume_opts }}"
-      - "{{ home }}/.ssh/{{ ssh_key_name }}:/root/.ssh/id_rsa"
-      - "{{ home }}/.ssh/{{ ssh_key_name }}.pub:/root/.ssh/id_rsa.pub"
+      - "{{ local_project_path }}:{{ webserver_root }}{{ sitename }}/"
+      - "{{ home_path }}/.ssh/{{ ssh_key_name }}:/root/.ssh/id_rsa"
+      - "{{ home_path }}/.ssh/{{ ssh_key_name }}.pub:/root/.ssh/id_rsa.pub"
     state: started
     restart: yes
     privileged: yes
     command: /lib/systemd/systemd
+
