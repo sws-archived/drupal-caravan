@@ -1,10 +1,31 @@
 ---
-# I'm using this to run docker.py
-# Otherwise, it wasn't running and failing
+# Ansible playbook that setups up a test environment and site copy.
+# https://github.com/SU-SWS/drupal-caravan
+# =================================================================
+#
+# This playbook contains five different sub-playbooks. They're broken out
+# like this, so that I could include the DrupalVM playbooks without also having
+# the ability to specify a variables file for DrupalVM's own Ansible playbooks.
+#
+# KNOWN ISSUES:
+#   - The dynamic inventory docker.py was not running until after a failed
+#     play run. I have added the first section, which simply prints a debug
+#     statement, to kick off this docker.py script.
+#   - Right now, I am limiting container playbooks with the string, "se3_blt".
+#     Eventually, I need to turn this into a variable.
+#   - docker.py includes as if it's a host, "unix://var/run/docker.sock".
+#     See: https://groups.google.com/forum/#!topic/ansible-devel/QSWs-Jvks5c
+
+
+# PLAY 1: Kick off docker.py
+# ==========================
 - hosts: all
   tasks:
     - debug: msg="Host - {{ inventory_hostname }}"
 
+
+# PLAY 2: Setup localhost and create container
+# ============================================
 - hosts: 127.0.0.1
 
   vars_files:
@@ -18,6 +39,9 @@
     - name: restart Apache
       command: brew services restart httpd22
 
+
+# PLAY 3: Configure container
+# ===========================
 - hosts: se3_blt
   connection: docker
   gather_facts: no
@@ -30,14 +54,15 @@
   roles:
     - run-drupalvm
 
-# Have not yet found a great way to inject a vars file
-# Copying vars file to geerlingguy/drupal-vm/config.yml
+
+# PLAY 4: Run DrupalVM Ansible playbooks
+========================================
 - include: ../../../geerlingguy/drupal-vm/tests/test-setup.yml hosts="{{ sitename }}"
 - include: ../../../geerlingguy/drupal-vm/provisioning/playbook.yml hosts="{{ sitename }}"
 
-# I'd love to set this as a variable, but then why, one might ask
-# use docker.py?  I assume it includes useful extra_vars related
-# to communicating with this host.
+
+# PLAY 5: Setup Acquia and install site
+=======================================
 - hosts: se3_blt
   connection: docker
   gather_facts: no
