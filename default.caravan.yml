@@ -26,8 +26,15 @@
 # copies of the production database.
 # Example:
 # acquia_id_rsa
+#
+# PRODUCTION_HOST_ADDRESS:
+# Enter the server address we can use to download a fresh copy of the site's
+# production database and files.
+# Examples:
+# earthstg.prod.acquia-sites.com
 
 sitename: ""
 home_path: ""
 local_project_path: ""
 ssh_key_name: ""
+production_host_address: ""
