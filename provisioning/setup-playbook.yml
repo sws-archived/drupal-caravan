@@ -1,4 +1,10 @@
 ---
+# I'm using this to run docker.py
+# Otherwise, it wasn't running and failing
+- hosts: all
+  tasks:
+    - debug: msg="Host - {{ inventory_hostname }}"
+
 - hosts: 127.0.0.1
 
   vars_files:

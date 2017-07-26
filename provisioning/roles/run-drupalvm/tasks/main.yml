@@ -27,8 +27,6 @@
 # just lists of tasks, they include hosts, etc. I can only be included in the
 # setup-playbook unmodified.
 
-- debug: msg="Container - {{ inventory_hostname }}"
-
 - template:
     src: "config.yml.j2"
     dest: "{{ webserver_root }}{{ sitename }}/vendor/geerlingguy/drupal-vm/config.yml"
