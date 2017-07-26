@@ -2,7 +2,7 @@
 - hosts: 127.0.0.1
 
   vars_files:
-    - ../caravan.yml
+    - ../../../../caravan.yml
 
   roles:
     - setup-localhost
@@ -19,7 +19,7 @@
   user: root
 
   vars_files:
-    - ../caravan.yml
+    - ../../../../caravan.yml
 
   roles:
     - run-drupalvm
@@ -39,7 +39,7 @@
   user: root
 
   vars_files:
-    - ../caravan.yml
+    - ../../../../caravan.yml
 
   roles:
     - setup-acquia
