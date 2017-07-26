@@ -1,0 +1,51 @@
+---
+# This could probably just be install-site.
+
+- hosts: 127.0.0.1
+  connection: local
+
+  vars_files:
+    - ../caravan.yml
+
+  roles:
+    - setup-localhost
+    - setup-container
+
+  handlers:
+    - name: restart Apache
+      command: brew services restart httpd22
+
+- hosts: se3_blt
+  connection: docker
+  gather_facts: no
+  become: yes
+  user: root
+
+  vars_files:
+    - ../caravan.yml
+    - roles/setup-container/defaults/main.yml
+
+  roles:
+    - run-drupalvm
+
+# Have not yet found a great way to inject a vars file
+# Copying vars file to geerlingguy/drupal-vm/config.yml
+- include: ../../../geerlingguy/drupal-vm/tests/test-setup.yml hosts="{{ sitename }}"
+- include: ../../../geerlingguy/drupal-vm/provisioning/playbook.yml hosts="{{ sitename }}"
+
+# I'd love to set this as a variable, but then why, one might ask
+# use docker.py?  I assume it includes useful extra_vars related
+# to communicating with this host.
+- hosts: se3_blt
+  connection: docker
+  gather_facts: no
+  become: yes
+  user: root
+
+  vars_files:
+    - ../caravan.yml
+    - roles/setup-container/defaults/main.yml
+
+  roles:
+    - setup-acquia
+    - install-site

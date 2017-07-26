@@ -18,38 +18,6 @@
 # Example:
 # docker (recommended), ssh
 #
-# DISTRO:
-# DrupalVM has several different Docker images that you can use as a foundation
-# for your environment. Options include, ...
-# Example: ubuntu1604 (recommended), debian9
-#
-# IP_ADDRESS:
-# DrupalVM chose 192.168.88.88 as a default IP address to use. This value
-# will be added to your /etc/hosts file, along with your {{ sitename }}, so that
-# you can access your container through your local browser. If you already
-# have a VM using this IP address, or find yourself restricted to an IP address
-# range, then you can change this value. For more information, see:
-# http://docs.drupalvm.com/en/latest/other/networking/#network-route-collision.
-# Example:
-# 192.168.88.88, 172.16.0.88
-#
-# HTTP_PORT:
-# Since 80 is a pretty popular port, we set the default for this container to
-# 9000. This means that the container will open a port by this number for your
-# local machine to access, ie. http://{{ sitename }}.local:9000.  We're assuming most
-# local computers will already have processes running on port 80. You can change
-# this value to any port number, assuming no process is already running on the
-# same port.
-# Example:
-# 9000, 80
-#
-# HTTPS_PORT:
-# Similarly, since 443 is a pretty popular port for HTTPS, we set the default
-# for this container to 9003. This means that you should be able to access the
-# site over HTTPS at https://{{ sitename }}.local:9001.
-# Example:
-# 9001, 443
-#
 # WEBSERVER_ROOT:
 # This is the absolute path where Caravan will install your site within the container.
 # Example:
@@ -63,9 +31,6 @@
 # Example:
 # docroot
 #
-distro: "ubuntu1604"
-ip_address: "192.168.88.88"
-local_http_port: 9000
-local_https_port: 9001
+ansible_connection: docker
 webserver_root: "/var/www/"
 site_install_directory: "docroot"

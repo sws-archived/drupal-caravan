@@ -1,16 +1,11 @@
 # Attempting to override DrupalVM default variables
-drupal_db_user: "{{ drupal_domain }}"
-drupal_db_password: "{{ drupal_domain }}"
-drupal_db_name: "{{ drupal_domain }}"
-
-# This comes from an if statement in DrupalVM's bake.sh script
-# The value should be 'rw,cached' if OSTYPE=="darwin"*
-# otherwise, it should be 'rw'.
-volume_opts: "rw,cached"
+drupal_domain: "{{ sitename }}"
+drupal_db_user: "{{ sitename }}"
+drupal_db_password: "{{ sitename }}"
+drupal_db_name: "{{ sitename }}"
 
 # Path information
-drupal_core_path: "{{ drupal_composer_install_dir }}/docroot"
-ssh_home: /var/www/"{{ drupal_domain }}"
+drupal_core_path: "{{ webserver_root }}{{ sitename }}{{ site_install_directory }}"
 
 # DrupalVM override: do not install a vanilla Drupal site
 drupal_build_composer_project: false

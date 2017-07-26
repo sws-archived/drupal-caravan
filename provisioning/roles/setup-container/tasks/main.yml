@@ -1,12 +1,38 @@
 ---
-# STATE
-
+# Ansible role for creating a Docker container
+# https://github.com/SU-SWS/drupal-caravan
+# ============================================
+#
+# The purpose of this role is to instantiate a STATE, in this case the state of
+# a container on the host machine.
+#
+# INPUTS:
+#   sitename
+#   contaianer_distro
+#   ip_address
+#   local_http_port
+#   local_https_port
+#   local_project_path
+#   webserver_root
+#   home_path
+#   ssh_key_name
+#
+# OUTPUTS:
+# --
+#
+# ALTERNATIVE ROLES:
+# --
+#
+# REQUIREMENTS:
+# Docker is running on host machine.
+#
+# KNOWN ISSUES:
 # https://github.com/ansible/ansible/issues/20492
-# Currently requires Python3
+
 - name: Create a container
   docker_container:
     name: "{{ sitename }}"
-    image: "geerlingguy/docker-{{ distro }}-ansible:latest"
+    image: "geerlingguy/docker-{{ container_distro }}-ansible:latest"
     ports:
       - "{{ ip_address }}:{{ local_http_port }}:80"
       - "{{ ip_address }}:{{ local_https_port }}:433"

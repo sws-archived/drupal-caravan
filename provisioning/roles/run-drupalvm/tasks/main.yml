@@ -1,4 +1,34 @@
 ---
+# Ansible role that positions custom configuration for DrupalVM
+# https://github.com/SU-SWS/drupal-caravan
+# =============================================================
+#
+# The purpose of this role is to instantiate a STATE, in this case the state of
+# configuration files in the vendor/geerlingguy/drupal-vm directory.
+#
+# INPUTS:
+#   sitename
+#   webserver_root
+#   site_install_directory
+#
+# OUTPUTS:
+# --
+#
+# ALTERNATIVE ROLES:
+# --
+#
+# REQUIREMENTS:
+# DrupalVM is installed in the vendor directory.
+#
+# KNOWN ISSUES:
+# Editing any files in the surrounding build repository is less than ideal.
+# In this case, I could find no other option for passing in custom variables
+# to DrupalVM. Given that the DrupalVM playbooks are complete, ie. they are not
+# just lists of tasks, they include hosts, etc. I can only be included in the
+# setup-playbook unmodified.
+
+- debug: msg="Container - {{ inventory_hostname }}"
+
 - template:
     src: "config.yml.j2"
-    dest: "{{ drupalvm_project_root }}/vendor/geerlingguy/drupal-vm/config.yml"
+    dest: "{{ webserver_root }}{{ sitename }}/vendor/geerlingguy/drupal-vm/config.yml"

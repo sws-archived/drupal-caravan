@@ -1,14 +1,40 @@
 ---
+# Ansible role for setting up OSX to host a Docker container
+# https://github.com/SU-SWS/drupal-caravan
+# ==========================================================
+#
+# The purpose of this role is to run TASKS, that prepare a local, development
+# machine to host a Docker container. We do not know what might be in someone's
+# /etc/hosts file, for example. Nor would we ever want to overwrite their
+# /etc/hosts file with a template that deletes all local entries.
+#
+# INPUTS:
+#   sitename
+#   ip_address
+#   ansible_os_family
+#
+# OUTPUTS:
+# --
+#
+# ALTERNATIVE ROLES:
+# --
+#
+# REQUIREMENTS:
+# Permission to edit /etc/hosts
+#
+# KNOWN ISSUES:
+# --
+
 - name: Add container IP to /etc/hosts
   lineinfile:
     path: /etc/hosts
     insertafter: EOF
-    line: "192.168.88.88  {{ sitename }}.local"
+    line: "{{ ip_address }}  {{ sitename }}.local"
   notify: restart Apache
   become: true
 
 - name: Add IP alias
-  command: ifconfig lo0 alias 192.168.88.88/24
+  command: "ifconfig lo0 alias {{ ip_address }}/24"
   become: true
   when: ansible_os_family == "Darwin"
   notify: restart Apache

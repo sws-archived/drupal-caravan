@@ -1,4 +1,6 @@
 ---
+# STATE
+
 status "Installing Chrome 59.0.3071.104"
 docker exec $DRUPALVM_MACHINE_NAME sudo apt-get install libxss1 libappindicator1 libindicator7 vim wget -y
 docker exec $DRUPALVM_MACHINE_NAME wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb

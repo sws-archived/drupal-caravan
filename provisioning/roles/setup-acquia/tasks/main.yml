@@ -1,14 +1,38 @@
 ---
+# Ansible role that uses BLT to setup site settings
+# https://github.com/SU-SWS/drupal-caravan
+# =================================================
+#
+# The purpose of this role is to instantiate a STATE, in this case the state of
+# settings files in the build repository.
+#
+# INPUTS:
+#   sitename
+#   webserver_root
+#   production_host_address
+#
+# OUTPUTS:
+# --
+#
+# ALTERNATIVE ROLES:
+# --
+#
+# REQUIREMENTS:
+# Acquia BLT in vendor directory.
+#
+# KNOWN ISSUES:
+# --
+
 - name: Change key permissions
   command: chmod 600 /root/.ssh/id_rsa
 
 - name: Save Acquia server as known_host
-  shell: ssh-keyscan earthstg.ssh.prod.acquia-sites.com >> /root/.ssh/known_hosts
+  shell: "ssh-keyscan {{ production_host_address }} >> /root/.ssh/known_hosts"
 
 - name: Setup drupal-scaffold
   shell:
     cmd: composer drupal-scaffold
-    chdir: "{{ drupalvm_project_root }}"
+    chdir: "{{ webserver_root }}{{ sitename }}"
 
 # See: https://github.com/acquia/blt/issues/1033
 # PHP extension for VM's
@@ -20,9 +44,10 @@
 - name: Setup site settings files
   shell:
     cmd: vendor/bin/blt {{ item }}
-    chdir: "{{ drupalvm_project_root }}"
+    chdir: "{{ webserver_root }}{{ sitename }}"
   with_items:
     - 'setup:settings'
     - 'setup:build'
     - 'setup:git-hooks'
     - 'setup:hash-salt'
+  become: false

@@ -1,7 +1,30 @@
 ---
-# Removing `-Dsync.files=true` as this is still requiring
-# user input, even after testing with BLT Issue#1810.
+# Ansible role that uses BLT to refresh or install a site
+# https://github.com/SU-SWS/drupal-caravan
+# =======================================================
+#
+# The purpose of this role is to run a TASK, in this case an Acquia BLT
+# process that downloads a fresh copy of the site's production database
+# and files.
+#
+# INPUTS:
+#   sitename
+#   webserver_root
+#
+# OUTPUTS:
+# --
+#
+# ALTERNATIVE ROLES:
+# --
+#
+# REQUIREMENTS:
+# Acquia BLT in vendor directory.
+#
+# KNOWN ISSUES:
+# I've removed `-Dsync.files=true` as this is still requiring
+# user input, even after testing with the fix for: https://github.com/acquia/blt/issues/1810.
+
 - name: install site with BLT
   shell:
     cmd: vendor/bin/blt sync:refresh -y
-    chdir: "{{ drupalvm_project_root }}"
+    chdir: "{{ webserver_root }}{{ sitename }}"

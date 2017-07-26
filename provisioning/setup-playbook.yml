@@ -1,6 +1,5 @@
 ---
 - hosts: 127.0.0.1
-  connection: local
 
   vars_files:
     - ../caravan.yml
@@ -21,7 +20,6 @@
 
   vars_files:
     - ../caravan.yml
-    - roles/setup-container/defaults/main.yml
 
   roles:
     - run-drupalvm
@@ -42,7 +40,6 @@
 
   vars_files:
     - ../caravan.yml
-    - roles/setup-container/defaults/main.yml
 
   roles:
     - setup-acquia
