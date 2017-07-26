@@ -37,9 +37,9 @@
 
 # See: https://github.com/acquia/blt/issues/1033
 # PHP extension for VM's
-- name: Install bz2 for PHP7.0
+- name: Install bz2 for PHP
   apt:
-    name: php7.0-bz2
+    name: "php{{ php_version }}-bz2"
     state: present
 
 - name: Setup site settings files
