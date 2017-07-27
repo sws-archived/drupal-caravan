@@ -21,7 +21,7 @@ Installation
 
 1. You'll need permissions and ssh access to a site on Acquia.
 2. You'll also need to clone a local copy of the site you want to build, and run `composer install`.
-3. Create a local copy of the caravan.yml configuration file, ie. `cd vendor/su-sws/drupal-caravan && cp default.caravan.yml caravan.yml`.
+3. Create a local copy of the caravan.yml configuration file and save it in the root directory of your build repository, ie. `cp vendor/su-sws/drupal-caravan/default.caravan.yml caravan.yml`.  Update values specific to your local machine.
 4. From the root directory of a build repository run, `vendor/bin/blt sws:caravan`.
 5. After a very long while, you should be able to find your site at http://[SITENAME].local:9000.
 
