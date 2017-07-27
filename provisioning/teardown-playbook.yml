@@ -1,0 +1,24 @@
+---
+# Ansible playbook that tearsdown a test environment and site copy.
+# https://github.com/SU-SWS/drupal-caravan
+# =================================================================
+#
+# This playbook undoes setup-localhost and setup-container.
+#
+# KNOWN ISSUES
+# --
+#
+# PLAY 1: Remove hosts entry, IP alias, and container
+# ===================================================
+- hosts: 127.0.0.1
+  connection: local
+  become: true
+
+  vars_files:
+    - ../../../../caravan.yml
+
+  roles:
+    - teardown-localhost
+
+  tasks:
+    - debug: msg="Host - {{ inventory_hostname }}"

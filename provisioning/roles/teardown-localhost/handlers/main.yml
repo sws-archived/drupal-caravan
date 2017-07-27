@@ -1,0 +1,3 @@
+---
+- name: restart Apache
+  command: brew services restart httpd22

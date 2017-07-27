@@ -4,7 +4,7 @@
 # ===================================================
 #
 # The purpose of this role is to run TASKS, in this case remove an entry
-# from /etc/hosts and remove an IP alias.
+# from /etc/hosts, remove an IP alias, stop and remove a Docker container.
 #
 # INPUTS:
 #   sitename
@@ -21,19 +21,26 @@
 # Permission to edit /etc/hosts
 #
 # KNOWN ISSUES:
-# --
+# I have copied the setup-localhost handlers directory.  I should be able to
+# use their handler, without having the duplicate the directory.
 
-- name: Add container IP to /etc/hosts
+- name: Remove container IP to /etc/hosts
   lineinfile:
     path: /etc/hosts
     insertafter: EOF
-    line: "{{ ip_address }}  {{ sitename }}.local"
+    line: "{{ container_ip_address }}  {{ sitename }}.local"
     state: absent
   notify: restart Apache
   become: true
 
-- name: Add IP alias
-  command: "ifconfig lo0 -alias {{ ip_address }}/24"
+- name: Remove IP alias
+  command: "ifconfig lo0 -alias {{ container_ip_address }}"
   become: true
   when: ansible_os_family == "Darwin"
   notify: restart Apache
+  ignore_errors: yes
+
+- name: Remove Docker container
+  docker_container:
+    name: "{{ sitename }}"
+    state: absent
