@@ -8,8 +8,9 @@
 #
 # INPUTS:
 #   sitename
-#   webserver_root
-#   production_host_address
+#   container_webserver_root
+#   container_production_host_address
+#   container_php_version
 #
 # OUTPUTS:
 # --
@@ -28,24 +29,24 @@
   command: chmod 600 /root/.ssh/id_rsa
 
 - name: Save Acquia server as known_host
-  shell: "ssh-keyscan {{ production_host_address }} >> /root/.ssh/known_hosts"
+  shell: "ssh-keyscan {{ container_production_host_address }} >> /root/.ssh/known_hosts"
 
 - name: Setup drupal-scaffold
   shell:
     cmd: composer drupal-scaffold
-    chdir: "{{ webserver_root }}{{ sitename }}"
+    chdir: "{{ container_webserver_root }}{{ sitename }}"
 
 # See: https://github.com/acquia/blt/issues/1033
 # PHP extension for VM's
 - name: Install bz2 for PHP
   apt:
-    name: "php{{ php_version }}-bz2"
+    name: "php{{ container_php_version }}-bz2"
     state: present
 
 - name: Setup site settings files
   shell:
     cmd: vendor/bin/blt {{ item }}
-    chdir: "{{ webserver_root }}{{ sitename }}"
+    chdir: "{{ container_webserver_root }}{{ sitename }}"
   with_items:
     - 'setup:settings'
     - 'setup:build'

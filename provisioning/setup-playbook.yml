@@ -15,7 +15,13 @@
 #     Eventually, I need to turn this into a variable.
 #   - docker.py includes as if it's a host, "unix://var/run/docker.sock".
 #     See: https://groups.google.com/forum/#!topic/ansible-devel/QSWs-Jvks5c
-
+#   - I had a handler for Play 2 to restart apache with brew. I have removed
+#     that because Jeff recommended bundling handlers with roles. And demoed
+#     a way to restart apache that is OS agnostic.
+#   - Right now, I'm storing variables required by these roles in group_vars.
+#     On the one hand, that allows us to be very specific about what those
+#     values should be on different servers. On the other, it means that roles
+#     are not technically self-sufficient.
 
 # PLAY 1: Kick off docker.py
 # ==========================
@@ -34,11 +40,6 @@
   roles:
     - setup-localhost
     - setup-container
-
-  handlers:
-    - name: restart Apache
-      command: brew services restart httpd22
-
 
 # PLAY 3: Configure container
 # ===========================

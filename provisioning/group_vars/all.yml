@@ -1,44 +1,9 @@
-# Defaults for running Drupal Caravan against a container
+# Defaults used by multiple roles on multiple hosts.
 # https://github.com/SU-SWS/drupal-caravan
-# =======================================================
-#
-# These default values will be used to configure your Docker container.
-# Imagine them as the variables you would put in a docker-compose file.
-# They will determine how your host machine, ie. local machine, connects
-# with the container.  And be used by applications like DrupalVM to configure
-# your container accordingly.
-#
-# These variables will be used against all containers within the docker-hosts
-# inventory group.  This group is dynamically created by the docker.py script.
-#
-# ANSIBLE_CONNECTION:
-# Ansible gives you the option of running playbooks against a container using
-# ssh or docker.  A docker connection should be the same as running the command,
-# ie. docker exec -it {{ sitename }} command.
-# Example:
-# docker (recommended), ssh
-#
-# WEBSERVER_ROOT:
-# This is the absolute path where Caravan will install your site within the container.
-# Example:
-# /var/www/ (recommended)
-#
-# SITE_INSTALL_DIRECTORY:
-# Since we have chosen to build sites with composer, we have separated files
-# required to build a site from the site files. Site files are installed in a
-# sub-directory, within the build repository. For example, /var/www/{{ sitename }}/docroot.
-# Do not include any preceding nor trailing slashes.
-# Example:
-# docroot
-#
-# PHP_VERSION:
-# Acquia BLT has a dependency that appears to require PHP7. However, some
-# parts of their infrastructure are supposedly still on PHP5.6. We'll be using
-# PHP 7.0 by default, but you can change this value to your need.
-# Example:
-# 7.0, 5.6
-#
-ansible_connection: docker
-webserver_root: "/var/www/"
-site_install_directory: "docroot"
-php_version: "7.0"
+# =================================================
+
+sitename:                          "caravan"
+container_production_host_address: "earthstg.ssh.prod.acquia-sites.com"
+container_webserver_root:          "/var/www/"
+container_site_install_directory:  "docroot"
+container_php_version:             "7.0"

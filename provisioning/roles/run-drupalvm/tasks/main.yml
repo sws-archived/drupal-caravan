@@ -8,8 +8,8 @@
 #
 # INPUTS:
 #   sitename
-#   webserver_root
-#   site_install_directory
+#   container_webserver_root
+#   container_site_install_directory
 #
 # OUTPUTS:
 # --
@@ -29,4 +29,4 @@
 
 - template:
     src: "config.yml.j2"
-    dest: "{{ webserver_root }}{{ sitename }}/vendor/geerlingguy/drupal-vm/config.yml"
+    dest: "{{ container_webserver_root }}{{ sitename }}/vendor/geerlingguy/drupal-vm/config.yml"

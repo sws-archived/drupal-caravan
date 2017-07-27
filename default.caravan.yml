@@ -1,40 +1,116 @@
 # Config file for Drupal Caravan
 # https://github.com/SU-SWS/drupal-caravan
 # ========================================
-
+#
+# Save this file to the root directory of your build repository as
+# caravan.yml. To use different values per host, you can also save copies
+# to provisioning/group_vars/[group_name].yml or edit the default group_vars
+# files in provisioning/group_vars.
+#
+# KNOWN ISSUES:
+# With this structure, roles are not self-contained. They rely on variables
+# outside the role directory. Another organization would be to save default
+# values in roles/role-name/defaults/main.yml. The reason I chose not to do this
+# is because so many variables are shared between multiple roles, and might be
+# host specific.
+#
+#sitename:                          "caravan"
+#localhost_home_path:               "/Users/johndoe"
+#localhost_project_path:            "{{ localhost_home_path }}/Sites/{{ sitename }}"
+#localhost_ssh_key_name:            "acquia_id_rsa"
+#container_production_host_address: "earthstg.ssh.prod.acquia-sites.com"
+#container_webserver_root:          "/var/www/"
+#container_site_install_directory:  "docroot"
+#container_distro:                  "ubuntu1604"
+#container_ip_address:              "192.168.88.88"
+#localhost_http_port:               9000
+#localhost_https_port:              9001
+#container_php_version:             "7.0"
+#
+#
+# Default values used in multiple roles against multiple hosts
+# ============================================================
+#
 # SITENAME:
 # Enter a nickname for your project. Use underscores, not hyphens.
 # This value will be used to determine a number of variables in the created
 # environment, for example, container name, database name, webroot, etc.
-# Example:
-# se3_blt, earth
 #
 # HOME_PATH:
 # Enter the absolute path of your user's local, home directory.
-# Example:
-# /Users/johndoe, /usr/janedoe
 #
 # LOCAL_PROJECT_PATH:
 # Enter the absolute path to your local copy of the build repository.
 # Do not include /docroot in the path.  This directory should include
 # the composer.json project for this project.
-# Example:
-# /Users/johndoe/Sites/{{ sitename }}, /var/www/{{ sitename }}
 #
 # SSH_KEY_NAME:
 # Enter the filename of an ssh key that gives you access to cloud hosted
 # copies of the production database.
-# Example:
-# acquia_id_rsa
 #
 # PRODUCTION_HOST_ADDRESS:
 # Enter the server address we can use to download a fresh copy of the site's
 # production database and files.
-# Examples:
-# earthstg.ssh.prod.acquia-sites.com
+#
+#
+# Variables for running Drupal Caravan on localhost
+# =======================================================
+#
+# These default values are used when setting up the host machine. A host machine
+# might be your laptop, it might also be a TravisCI or Acquia Pipelines container.
+# There should only be one host within this local group. While many of these variables
+# concern and configure a container, the reason they are in the local group_vars
+# file is because they are only used to create the container on a local host,
+# and therefore only used against a local host.
+#
+#
+# DISTRO:
+# DrupalVM has several different Docker images that you can use as a foundation
+# for your environment.
+#
+# IP_ADDRESS:
+# DrupalVM chose 192.168.88.88 as a default IP address to use. This value
+# will be added to your /etc/hosts file, along with your {{ sitename }}, so that
+# you can access your container through your local browser. If you already
+# have a VM using this IP address, or find yourself restricted to an IP address
+# range, then you can change this value. For more information, see:
+# http://docs.drupalvm.com/en/latest/other/networking/#network-route-collision.
+#
+# HTTP_PORT:
+# Since 80 is a pretty popular port, we set the default for this container to
+# 9000. This means that the container will open a port by this number for your
+# local machine to access, ie. http://{{ sitename }}.local:9000.  We're assuming most
+# local computers will already have processes running on port 80. You can change
+# this value to any port number, assuming no process is already running on the
+# same port.
+#
+# HTTPS_PORT:
+# Similarly, since 443 is a pretty popular port for HTTPS, we set the default
+# for this container to 9003. This means that you should be able to access the
+# site over HTTPS at https://{{ sitename }}.local:9001.
+#
+# WEBSERVER_ROOT:
+# This is the absolute path where Caravan will install your site within the container.
 
-sitename: ""
-home_path: ""
-local_project_path: ""
-ssh_key_name: ""
-production_host_address: ""
+# Variables for running Drupal Caravan against a container
+# ========================================================
+#
+# These default values will be used to configure your Docker container.
+# Imagine them as the variables you would put in a docker-compose file.
+# They will determine how your host machine, ie. local machine, connects
+# with the container.  And be used by applications like DrupalVM to configure
+# your container accordingly.
+#
+# These variables will be used against all containers within the docker-hosts
+# inventory group.  This group is dynamically created by the docker.py script.
+#
+# SITE_INSTALL_DIRECTORY:
+# Since we have chosen to build sites with composer, we have separated files
+# required to build a site from the site files. Site files are installed in a
+# sub-directory, within the build repository. For example, /var/www/{{ sitename }}/docroot.
+# Do not include any preceding nor trailing slashes.
+#
+# PHP_VERSION:
+# Acquia BLT has a dependency that appears to require PHP7. However, some
+# parts of their infrastructure are supposedly still on PHP5.6. We'll be using
+# PHP 7.0 by default, but you can change this value to your need.

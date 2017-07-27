@@ -1,0 +1,39 @@
+---
+# Ansible role for removing changes made to localhost
+# https://github.com/SU-SWS/drupal-caravan
+# ===================================================
+#
+# The purpose of this role is to run TASKS, in this case remove an entry
+# from /etc/hosts and remove an IP alias.
+#
+# INPUTS:
+#   sitename
+#   ip_address
+#   ansible_os_family
+#
+# OUTPUTS:
+# --
+#
+# ALTERNATIVE ROLES:
+# --
+#
+# REQUIREMENTS:
+# Permission to edit /etc/hosts
+#
+# KNOWN ISSUES:
+# --
+
+- name: Add container IP to /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    insertafter: EOF
+    line: "{{ ip_address }}  {{ sitename }}.local"
+    state: absent
+  notify: restart Apache
+  become: true
+
+- name: Add IP alias
+  command: "ifconfig lo0 -alias {{ ip_address }}/24"
+  become: true
+  when: ansible_os_family == "Darwin"
+  notify: restart Apache

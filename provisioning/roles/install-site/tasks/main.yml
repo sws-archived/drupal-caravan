@@ -9,7 +9,7 @@
 #
 # INPUTS:
 #   sitename
-#   webserver_root
+#   container_webserver_root
 #
 # OUTPUTS:
 # --
@@ -27,4 +27,4 @@
 - name: install site with BLT
   shell:
     cmd: vendor/bin/blt sync:refresh -y
-    chdir: "{{ webserver_root }}{{ sitename }}"
+    chdir: "{{ container_webserver_root }}{{ sitename }}"

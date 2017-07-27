@@ -8,14 +8,14 @@
 #
 # INPUTS:
 #   sitename
-#   contaianer_distro
-#   ip_address
-#   local_http_port
-#   local_https_port
-#   local_project_path
-#   webserver_root
-#   home_path
-#   ssh_key_name
+#   container_distro
+#   container_ip_address
+#   localhost_http_port
+#   localhost_https_port
+#   localhost_project_path
+#   container_webserver_root
+#   localhost_home_path
+#   localhost_ssh_key_name
 #
 # OUTPUTS:
 # --
@@ -34,12 +34,12 @@
     name: "{{ sitename }}"
     image: "geerlingguy/docker-{{ container_distro }}-ansible:latest"
     ports:
-      - "{{ ip_address }}:{{ local_http_port }}:80"
-      - "{{ ip_address }}:{{ local_https_port }}:433"
+      - "{{ container_ip_address }}:{{ localhost_http_port }}:80"
+      - "{{ container_ip_address }}:{{ localhost_https_port }}:433"
     volumes:
-      - "{{ local_project_path }}:{{ webserver_root }}{{ sitename }}/"
-      - "{{ home_path }}/.ssh/{{ ssh_key_name }}:/root/.ssh/id_rsa"
-      - "{{ home_path }}/.ssh/{{ ssh_key_name }}.pub:/root/.ssh/id_rsa.pub"
+      - "{{ localhost_project_path }}:{{ container_webserver_root }}{{ sitename }}/"
+      - "{{ localhost_home_path }}/.ssh/{{ localhost_ssh_key_name }}:/root/.ssh/id_rsa"
+      - "{{ localhost_home_path }}/.ssh/{{ localhost_ssh_key_name }}.pub:/root/.ssh/id_rsa.pub"
     state: started
     restart: yes
     privileged: yes

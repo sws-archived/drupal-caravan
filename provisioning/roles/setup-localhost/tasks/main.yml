@@ -10,7 +10,7 @@
 #
 # INPUTS:
 #   sitename
-#   ip_address
+#   container_ip_address
 #   ansible_os_family
 #
 # OUTPUTS:
@@ -29,12 +29,12 @@
   lineinfile:
     path: /etc/hosts
     insertafter: EOF
-    line: "{{ ip_address }}  {{ sitename }}.local"
+    line: "{{ container_ip_address }}  {{ sitename }}.local"
   notify: restart Apache
   become: true
 
 - name: Add IP alias
-  command: "ifconfig lo0 alias {{ ip_address }}/24"
+  command: "ifconfig lo0 alias {{ container_ip_address }}/24"
   become: true
   when: ansible_os_family == "Darwin"
   notify: restart Apache
