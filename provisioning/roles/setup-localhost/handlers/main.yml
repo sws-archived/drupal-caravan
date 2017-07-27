@@ -1,5 +1,3 @@
 ---
-- name: restart apache
-  service:
-    name: "{{ apache_service }}"
-    state: "{{ apache_restart_state }}"
+- name: restart Apache
+  command: brew services restart httpd22

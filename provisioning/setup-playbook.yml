@@ -25,14 +25,15 @@
 
 # PLAY 1: Kick off docker.py
 # ==========================
-- hosts: all
-  tasks:
-    - debug: msg="Host - {{ inventory_hostname }}"
-
-
+#- hosts: all
+#  tasks:
+#    - debug: msg="Host - {{ inventory_hostname }}"
+#
+#
 # PLAY 2: Setup localhost and create container
 # ============================================
 - hosts: 127.0.0.1
+  connection: local
 
   vars_files:
     - ../../../../caravan.yml
@@ -57,13 +58,13 @@
 
 
 # PLAY 4: Run DrupalVM Ansible playbooks
-========================================
+# ========================================
 - include: ../../../geerlingguy/drupal-vm/tests/test-setup.yml hosts="{{ sitename }}"
 - include: ../../../geerlingguy/drupal-vm/provisioning/playbook.yml hosts="{{ sitename }}"
 
 
 # PLAY 5: Setup Acquia and install site
-=======================================
+# =======================================
 - hosts: se3_blt
   connection: docker
   gather_facts: no
