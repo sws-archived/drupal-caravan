@@ -8,17 +8,18 @@ if [ ! -f /usr/local/bin/pip ]; then sudo easy_install pip; fi
 # sudo pip install --upgrade pip setuptools --ignore-installed
 # if [ -z $(python -c "import pyyaml") ]; then sudo pip install pyyaml; fi
 
+# Removed -y because pip was complaining on Travis that there is no such option.
 ansible_package=$(pip list --format=legacy | grep "ansible")
 dockerpy_package=$(pip list --format=legacy | grep "docker-py")
 dockercompose_package=$(pip list --format=legacy | grep "docker-compose")
-if [ -z "$ansible_package" ]; then sudo pip install ansible -y; fi
-if [ -z "$dockerpy_package" ]; then sudo pip install docker-py -y; fi
-if [ -z "$dockercompose_package" ]; then sudo pip install docker-compose -y; fi
+if [ -z "$ansible_package" ]; then sudo pip install ansible; fi
+if [ -z "$dockerpy_package" ]; then sudo pip install docker-py; fi
+if [ -z "$dockercompose_package" ]; then sudo pip install docker-compose; fi
 
-if [ ! -x /usr/local/bin/docker ]; then
+if [ ! -x /usr/local/bin/docker] && [[ "$OSTYPE" == "darwin"* ]]; then
   echo "Installing Docker via wget"
-  wget https://download.docker.com/mac/stable/Docker.dmg ~/Downloads/.
-  echo "Find Docker.dmg in your Downloads directory and click to install."
+  wget https://download.docker.com/mac/stable/Docker.dmg $HOME/.
+  echo "Find Docker.dmg in your $HOME directory and click to install."
   read -p "Have you started the Docker Application? " -n 1 -r
   if [[ $REPLY =~ ^[Yy]$ ]]
   then
