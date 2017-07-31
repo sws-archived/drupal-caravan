@@ -17,7 +17,7 @@ if [ -z "$ansible_package" ]; then sudo pip install ansible; fi
 if [ -z "$dockerpy_package" ]; then sudo pip install docker-py; fi
 if [ -z "$dockercompose_package" ]; then sudo pip install docker-compose; fi
 
-if [ ! -x /usr/local/bin/docker] && [[ "$OSTYPE" == "darwin"* ]]; then
+if [ ! -x /usr/local/bin/docker ] && [[ "$OSTYPE" == "darwin"* ]]; then
   echo "Installing Docker via wget"
   wget https://download.docker.com/mac/stable/Docker.dmg $HOME/.
   echo "Find Docker.dmg in your $HOME directory and click to install."
