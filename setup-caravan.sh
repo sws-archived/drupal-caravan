@@ -38,13 +38,19 @@ caravan_path=$(find . -type d -name "drupal-caravan")
 # Always output Ansible log in color
 export ANSIBLE_FORCE_COLOR=true
 
-echo "Running this script will add a line to your /etc/hosts file and an IP"
-echo "alias on your local machine. Enter your password if you wish to continue."
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  echo "Running this script will add a line to your /etc/hosts file and an IP"
+  echo "alias on your local machine. Enter your password if you wish to continue."
 
-echo "Running localhost playbook"
-ansible-playbook -i $caravan_path/provisioning/inventory -K \
+  echo "Running localhost playbook"
+  ansible-playbook -i $caravan_path/provisioning/inventory -K \
+    $caravan_path/provisioning/setup-playbook.yml \
+    -c docker
+else
+  ansible-playbook -i $caravan_path/provisioning/inventory \
   $caravan_path/provisioning/setup-playbook.yml \
   -c docker
+fi
 
 echo "Visit http://[SITENAME].local:9000"
 echo "Or log into your container with: docker exec -it [SITENAME] bash"
