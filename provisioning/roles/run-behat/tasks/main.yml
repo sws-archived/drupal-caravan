@@ -1,7 +1,29 @@
 ---
-# TASK
+# Ansible role that uses BLT to run Behat tests
+# https://github.com/SU-SWS/drupal-caravan
+# =======================================================
+#
+# The purpose of this role is to run a TASK, in this case an Acquia BLT
+# process that runs all Behat tests in the build repo's tests directory.
+#
+# INPUTS:
+#   sitename
+#   container_webserver_root
+#
+# OUTPUTS:
+# --
+#
+# ALTERNATIVE ROLES:
+# --
+#
+# REQUIREMENTS:
+# Acquia BLT in vendor directory.
+#
+# KNOWN ISSUES:
+# - We want BLT to find all Behat tests throughout the build repo.
+#
 
-# find all behat tests and run all behat tests
-# save results and post them to a url
-
-docker exec $DRUPALVM_MACHINE_NAME sh -c "/var/www/earth/vendor/bin/behat -p local --colors --config $BEHAT_DEFAULT_CONFIG  /var/www/earth/tests/behat/features"
+- name: run Behat tests with BLT
+  shell:
+    cmd: vendor/bin/blt tests:behat
+    chdir: "{{ container_webserver_root }}{{ sitename }}"

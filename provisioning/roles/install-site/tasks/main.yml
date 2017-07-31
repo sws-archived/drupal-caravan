@@ -21,13 +21,14 @@
 # Acquia BLT in vendor directory.
 #
 # KNOWN ISSUES:
-# - I've removed `-Dsync.files=true` as this is still requiring
-#   user input, even after testing with the fix for: https://github.com/acquia/blt/issues/1810.
 # - BLT seems to believe this is a "staging" site. The masthead should say "local".
 #   Shea suggests: When you get the `staging` title that means that the config import failed,
 #   but the db import succeeded. That could be indicative of an error in the config and not the process.
+# - BLT currently has a bug, that is not allowing sync:refresh to run without user input
+#   https://github.com/acquia/blt/issues/1852
+#   https://github.com/acquia/blt/pull/1862
 
 - name: install site with BLT
   shell:
-    cmd: vendor/bin/blt sync:refresh -y
+    cmd: vendor/bin/blt sync:refresh -Dsync.files=true -n -y
     chdir: "{{ container_webserver_root }}{{ sitename }}"

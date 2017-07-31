@@ -54,7 +54,7 @@
     - ../../../../caravan.yml
 
   roles:
-    - run-drupalvm
+    - setup-drupalvm
 
 
 # PLAY 4: Run DrupalVM Ansible playbooks
@@ -77,3 +77,4 @@
   roles:
     - setup-acquia
     - install-site
+    - run-behat
