@@ -30,11 +30,9 @@
     path: /etc/hosts
     insertafter: EOF
     line: "{{ container_ip_address }}  {{ sitename }}.local"
-  notify: restart Apache
   become: true
 
 - name: Add IP alias
   command: "ifconfig lo0 alias {{ container_ip_address }}/24"
   become: true
   when: ansible_os_family == "Darwin"
-  notify: restart Apache
