@@ -28,7 +28,24 @@
 #   https://github.com/acquia/blt/issues/1852
 #   https://github.com/acquia/blt/pull/1862
 
-- name: install site with BLT
+#- name: install site with BLT
+#  shell:
+#    cmd: vendor/bin/blt sync:refresh -Dsync.files=true -n -y
+#    chdir: "{{ container_webserver_root }}{{ sitename }}"
+
+- name: Run BLT drush commands
   shell:
-    cmd: vendor/bin/blt sync:refresh -Dsync.files=true -n -y
+    cmd: vendor/bin/drush "{{ item }}"
     chdir: "{{ container_webserver_root }}{{ sitename }}"
+  with_items:
+    - cache-clear drush --uri=default --yes
+    - sql-sync @earth.test @self --structure-tables-key=lightweight --create -db --sanitize --uri=default -yes
+    - cache-clear drush --uri=default --yes
+    - rsync '@earth.test:%files' /var/www/{{ sitename }}/docroot/sites/default/files --exclude-paths='styles:css:js' -yes
+    - cc drush --uri=default --yes
+    - cache-rebuild --uri=default --yes
+    - updb --uri=default --yes
+    - pm-enable config_split --uri=default --yes
+    - config-import sync --uri=default --yes
+    - features-import-all --uri=default --yes
+    - cache-rebuild --uri=default --yes

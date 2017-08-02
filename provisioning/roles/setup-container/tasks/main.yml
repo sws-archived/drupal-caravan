@@ -29,6 +29,11 @@
 # KNOWN ISSUES:
 # https://github.com/ansible/ansible/issues/20492
 
+- name: Pull container image
+  docker_image:
+    name: "geerlingguy/docker-{{ container_distro }}-ansible:latest"
+    state: present
+
 - name: Create a container
   docker_container:
     name: "{{ sitename }}"

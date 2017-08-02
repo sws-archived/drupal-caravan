@@ -4,6 +4,7 @@
 # =================================================================
 #
 # This playbook undoes setup-localhost and setup-container.
+# It can be run with: ansible-playbook -i inventory teardown-playbook.yml -K
 #
 # KNOWN ISSUES
 # --

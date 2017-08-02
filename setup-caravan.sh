@@ -8,14 +8,14 @@ if [ ! -f /usr/local/bin/pip ]; then sudo easy_install pip; fi
 # sudo pip install --upgrade pip setuptools --ignore-installed
 
 # Removed -y because pip was complaining on Travis that there is no such option.
-yaml_package=$(pip list --format=legacy | grep "pyyaml")
+# yaml_package=$(pip list --format=legacy | grep "pyyaml")
 ansible_package=$(pip list --format=legacy | grep "ansible")
 dockerpy_package=$(pip list --format=legacy | grep "docker-py")
-dockercompose_package=$(pip list --format=legacy | grep "docker-compose")
-if [ -z "$yaml_package" ]; then sudo pip install pyyaml; fi
-if [ -z "$ansible_package" ]; then sudo pip install ansible; fi
-if [ -z "$dockerpy_package" ]; then sudo pip install docker-py; fi
-if [ -z "$dockercompose_package" ]; then sudo pip install docker-compose; fi
+# dockercompose_package=$(pip list --format=legacy | grep "docker-compose")
+# if [ -z "$yaml_package" ]; then sudo pip install pyyaml; fi
+if [ -z "$ansible_package" ]; then sudo pip install ansible==2.3.1.0; fi
+if [ -z "$dockerpy_package" ]; then sudo pip install docker-py==0.4.1; fi
+# if [ -z "$dockercompose_package" ]; then sudo pip install docker-compose; fi
 
 if [ ! -x /usr/local/bin/docker ] && [[ "$OSTYPE" == "darwin"* ]]; then
   echo "Installing Docker via wget"

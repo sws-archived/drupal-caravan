@@ -25,6 +25,11 @@
 # KNOWN ISSUES:
 # --
 
+- name: Install docker-composer
+  pip:
+    name: docker-compose
+    version: 1.14.0
+
 - name: Add container IP to /etc/hosts
   lineinfile:
     path: /etc/hosts

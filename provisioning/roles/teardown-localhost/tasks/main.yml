@@ -30,17 +30,30 @@
     insertafter: EOF
     line: "{{ container_ip_address }}  {{ sitename }}.local"
     state: absent
-  notify: restart Apache
   become: true
 
 - name: Remove IP alias
   command: "ifconfig lo0 -alias {{ container_ip_address }}"
   become: true
   when: ansible_os_family == "Darwin"
-  notify: restart Apache
   ignore_errors: yes
 
 - name: Remove Docker container
   docker_container:
     name: "{{ sitename }}"
+    state: absent
+
+- name: Remove Docker image
+  docker_image:
+    name: "geerlingguy/docker-{{ container_distro }}-ansible:latest"
+    state: absent
+
+- name: Remove pip packages
+  pip:
+    name:
+      - docker-py
+      - docker
+      - docker-pycreds
+      - dockerpty
+      - docker-compose
     state: absent
