@@ -52,8 +52,5 @@
   pip:
     name:
       - docker-py
-      - docker
       - docker-pycreds
-      - dockerpty
-      - docker-compose
     state: absent

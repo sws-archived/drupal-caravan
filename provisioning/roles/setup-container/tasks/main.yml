@@ -29,10 +29,14 @@
 # KNOWN ISSUES:
 # https://github.com/ansible/ansible/issues/20492
 
-- name: Pull container image
-  docker_image:
-    name: "geerlingguy/docker-{{ container_distro }}-ansible:latest"
-    state: present
+- name: Pull container image with command
+  command: "docker pull geerlingguy/docker-{{ container_distro }}-ansible:latest"
+
+# "Error pulling image geerlingguy/docker-ubuntu1604-ansible:latest - 'module' object has no attribute 'get_config_header'"
+#- name: Pull container image
+#  docker_image:
+#    name: "geerlingguy/docker-{{ container_distro }}-ansible:latest"
+#    state: present
 
 - name: Create a container
   docker_container:
@@ -49,4 +53,3 @@
     restart: yes
     privileged: yes
     command: /lib/systemd/systemd
-

@@ -33,19 +33,28 @@
 #    cmd: vendor/bin/blt sync:refresh -Dsync.files=true -n -y
 #    chdir: "{{ container_webserver_root }}{{ sitename }}"
 
+# Note: whether a command runs with `y` or `yes` differs between them.
 - name: Run BLT drush commands
   shell:
-    cmd: vendor/bin/drush "{{ item }}"
+    cmd: vendor/bin/drush -y {{ item }} --uri=default
     chdir: "{{ container_webserver_root }}{{ sitename }}"
   with_items:
-    - cache-clear drush --uri=default --yes
-    - sql-sync @earth.test @self --structure-tables-key=lightweight --create -db --sanitize --uri=default -yes
-    - cache-clear drush --uri=default --yes
-    - rsync '@earth.test:%files' /var/www/{{ sitename }}/docroot/sites/default/files --exclude-paths='styles:css:js' -yes
-    - cc drush --uri=default --yes
-    - cache-rebuild --uri=default --yes
-    - updb --uri=default --yes
-    - pm-enable config_split --uri=default --yes
-    - config-import sync --uri=default --yes
-    - features-import-all --uri=default --yes
-    - cache-rebuild --uri=default --yes
+    - cache-clear drush
+    - "sql-sync @earth.test @{{ sitename }}.local --structure-tables-key=lightweight --create-db --sanitize"
+    - cache-clear drush
+# Removed files from sync destination path, it was installing files in files, ie. sites/default/files/files
+    - "rsync '@earth.test:%files' {{ container_webserver_root }}{{ sitename }}/{{ container_site_install_directory }}/sites/default/ --exclude-paths='styles:css:js'"
+
+# Note: these need to be run in the docroot directory
+- name: Run BLT site-specific drush commands
+  shell:
+    cmd: ../vendor/bin/drush -y {{ item }} --uri=default
+    chdir: "{{ container_webserver_root }}{{ sitename }}/{{ container_site_install_directory }}"
+  with_items:
+    - cc drush
+    - cache-rebuild
+    - updb
+    - pm-enable config_split
+    - config-import sync
+    - features-import-all
+    - cache-rebuild

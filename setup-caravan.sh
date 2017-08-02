@@ -14,7 +14,8 @@ dockerpy_package=$(pip list --format=legacy | grep "docker-py")
 # dockercompose_package=$(pip list --format=legacy | grep "docker-compose")
 # if [ -z "$yaml_package" ]; then sudo pip install pyyaml; fi
 if [ -z "$ansible_package" ]; then sudo pip install ansible==2.3.1.0; fi
-if [ -z "$dockerpy_package" ]; then sudo pip install docker-py==0.4.1; fi
+# This should also install docker-pycreds==0.2.1
+if [ -z "$dockerpy_package" ]; then sudo pip install docker-py==1.10.6; fi
 # if [ -z "$dockercompose_package" ]; then sudo pip install docker-compose; fi
 
 if [ ! -x /usr/local/bin/docker ] && [[ "$OSTYPE" == "darwin"* ]]; then
