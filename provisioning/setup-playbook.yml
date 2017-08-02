@@ -22,13 +22,6 @@
 #     On the one hand, that allows us to be very specific about what those
 #     values should be on different servers. On the other, it means that roles
 #     are not technically self-sufficient.
-
-# PLAY 1: Kick off docker.py
-# ==========================
-#- hosts: all
-#  tasks:
-#    - debug: msg="Host - {{ inventory_hostname }}"
-#
 #
 # PLAY 2: Setup localhost and create container
 # ============================================
@@ -44,7 +37,7 @@
 
 # PLAY 3: Configure container
 # ===========================
-- hosts: se3_blt
+- hosts: "{{ sitename }}"
   connection: docker
   gather_facts: no
   become: yes
@@ -65,7 +58,7 @@
 
 # PLAY 5: Setup Acquia and install site
 # =======================================
-- hosts: se3_blt
+- hosts: "{{ sitename }}"
   connection: docker
   gather_facts: no
   become: yes

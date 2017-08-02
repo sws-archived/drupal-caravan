@@ -27,6 +27,7 @@
 # just lists of tasks, they include hosts, etc. I can only be included in the
 # setup-playbook unmodified.
 
-- template:
+- name: setup DrupalVM config file
+  template:
     src: "config.yml.j2"
     dest: "{{ container_webserver_root }}{{ sitename }}/vendor/geerlingguy/drupal-vm/config.yml"

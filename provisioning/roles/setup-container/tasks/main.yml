@@ -53,3 +53,6 @@
     restart: yes
     privileged: yes
     command: /lib/systemd/systemd
+
+- name: Refresh Ansible inventory
+  meta: refresh_inventory
