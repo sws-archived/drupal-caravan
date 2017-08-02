@@ -45,8 +45,13 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   echo "alias on your local machine. Enter your password if you wish to continue."
 
   echo "Running localhost playbook"
-  ansible-playbook -i $caravan_path/provisioning/inventory -K \
-    $caravan_path/provisioning/setup-playbook.yml \
+  ansible-playbook -i $caravan_path/provisioning/inventory/hosts -K \
+    $caravan_path/provisioning/setup-playbook.yml
+
+# I'd really like to combine this playbook run with the one above it.
+# But I'm not able to get ansible to run docker.py the first time round.
+  ansible-playbook -i $caravan_path/provisioning/inventory/docker.py -K \
+    $caravan_path/provisioning/setup-playbook.yml
     -c docker
 else
   ansible-playbook -i $caravan_path/provisioning/inventory \
