@@ -36,7 +36,7 @@
 # Note: whether a command runs with `y` or `yes` differs between them.
 - name: Run BLT drush commands
   shell:
-    cmd: vendor/bin/drush -y {{ item }} --uri=default
+    cmd: vendor/bin/drush -y {{ item }}
     chdir: "{{ container_webserver_root }}{{ sitename }}"
   with_items:
     - cache-clear drush
