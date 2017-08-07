@@ -4,7 +4,7 @@
 # ==================================================
 #
 # The purpose of this role is to instantiate a STATE, in this case
-# what the Behat local.yml file should look like in tests/behat.
+# the presence of Stanford's custom Behat step definitions.
 #
 # INPUTS:
 #   sitename
@@ -20,9 +20,14 @@
 # Acquia BLT in vendor directory.
 #
 # KNOWN ISSUES:
-# --
-#
+# - We'd like to eventually replace this task by simply including linky_clicky
+#   as a Caravan dependency in composer.json, however that requires updating
+#   the linky_clicky default branch from 5.x to 6.x, which would disrupt many
+#   things, like stanford_travisci_scripts.
 
-- template:
-    src: "local.yml"
-    dest: "{{ container_webserver_root }}{{ sitename }}/tests/behat/local.yml"
+- name: Download linky_clicky
+  git:
+    repo: "https://github.com/SU-SWS/linky_clicky.git"
+    dest: "{{ webserver_root }}{{ sitename }}/vendor/su-sws/linky_clicky"
+    version: 6.x
+    update: yes
