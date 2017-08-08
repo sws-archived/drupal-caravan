@@ -23,7 +23,12 @@
 # - We want BLT to find all Behat tests throughout the build repo.
 #
 
-- name: run Behat tests with BLT
+- name: run Behat tests without BLT
   shell:
-    cmd: vendor/bin/blt tests:behat
+    cmd: vendor/bin/behat --format html /var/www/se3_blt/docroot/modules/stanford/stanford_news/tests --colors --no-interaction --stop-on-failure --strict --config /var/www/se3_blt/vendor/su-sws/linky_clicky/behat.blt.yml --profile local --tags '~ajax&&~experimental&&~lightningextension' -v
     chdir: "{{ container_webserver_root }}{{ sitename }}"
+
+#- name: run Behat tests with BLT
+#  shell:
+#    cmd: vendor/bin/blt tests:behat
+#    chdir: "{{ container_webserver_root }}{{ sitename }}"
