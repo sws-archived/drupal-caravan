@@ -35,7 +35,10 @@ apache_vhosts:
   - servername: "{{ sitename }}.local"
     serveralias: "www.{{ sitename }}.local"
     documentroot: "{{ container_webserver_root }}{{ sitename }}/{{ container_site_install_directory }}"
-    extra_parameters: \"{{ apache_vhost_php_fpm_parameters }}\"
+    extra_parameters: |
+      <FilesMatch \.php$>
+        SetHandler "proxy:fcgi://127.0.0.1:9000"
+      </FilesMatch>
 
   - servername: "behat.{{ sitename }}.local"
     documentroot: "{{ container_webserver_root }}{{ sitename }}/reports/behat"
