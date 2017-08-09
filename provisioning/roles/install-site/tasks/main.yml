@@ -29,5 +29,5 @@
 
 - name: install site with BLT
   shell:
-    cmd: vendor/bin/blt sync:refresh -y
+    cmd: vendor/bin/blt sync:refresh -Dsync.files=true -y
     chdir: "{{ container_webserver_root }}{{ sitename }}"
