@@ -14,43 +14,27 @@
 # is because so many variables are shared between multiple roles, and might be
 # host specific.
 #
-#sitename:                          "caravan"
-#localhost_home_path:               "/Users/johndoe"
-#localhost_project_path:            "{{ localhost_home_path }}/Sites/{{ sitename }}"
-#localhost_ssh_key_name:            "acquia_id_rsa"
-#container_production_host_address: "earthstg.ssh.prod.acquia-sites.com"
-#container_webserver_root:          "/var/www/"
-#container_site_install_directory:  "docroot"
-#container_distro:                  "ubuntu1604"
-#container_ip_address:              "192.168.88.88"
-#localhost_http_port:               9000
-#localhost_https_port:              9001
-#container_php_version:             "7.0"
-#
 #
 # Default values used in multiple roles against multiple hosts
 # ============================================================
 #
-# SITENAME:
 # Enter a nickname for your project. Use underscores, not hyphens.
 # This value will be used to determine a number of variables in the created
 # environment, for example, container name, database name, webroot, etc.
+#sitename:                          "caravan"
 #
-# HOME_PATH:
-# Enter the absolute path of your user's local, home directory.
-#
-# LOCAL_PROJECT_PATH:
 # Enter the absolute path to your local copy of the build repository.
 # Do not include /docroot in the path.  This directory should include
 # the composer.json project for this project.
+#localhost_home_path:               "/Users/johndoe"
 #
-# SSH_KEY_NAME:
 # Enter the filename of an ssh key that gives you access to cloud hosted
 # copies of the production database.
+#localhost_ssh_key_name:            "acquia_id_rsa"
 #
-# PRODUCTION_HOST_ADDRESS:
 # Enter the server address we can use to download a fresh copy of the site's
 # production database and files.
+#container_production_host_address: "earthstg.ssh.prod.acquia-sites.com"
 #
 #
 # Variables for running Drupal Caravan on localhost
@@ -64,33 +48,33 @@
 # and therefore only used against a local host.
 #
 #
-# DISTRO:
 # DrupalVM has several different Docker images that you can use as a foundation
 # for your environment.
+#container_distro:                  "ubuntu1604"
 #
-# IP_ADDRESS:
 # DrupalVM chose 192.168.88.88 as a default IP address to use. This value
 # will be added to your /etc/hosts file, along with your {{ sitename }}, so that
 # you can access your container through your local browser. If you already
 # have a VM using this IP address, or find yourself restricted to an IP address
 # range, then you can change this value. For more information, see:
 # http://docs.drupalvm.com/en/latest/other/networking/#network-route-collision.
+#container_ip_address:              "192.168.88.88"
 #
-# HTTP_PORT:
 # Since 80 is a pretty popular port, we set the default for this container to
 # 9000. This means that the container will open a port by this number for your
 # local machine to access, ie. http://{{ sitename }}.local:9000.  We're assuming most
 # local computers will already have processes running on port 80. You can change
 # this value to any port number, assuming no process is already running on the
 # same port.
+#localhost_http_port:               9000
 #
-# HTTPS_PORT:
 # Similarly, since 443 is a pretty popular port for HTTPS, we set the default
 # for this container to 9003. This means that you should be able to access the
 # site over HTTPS at https://{{ sitename }}.local:9001.
+#localhost_https_port:              9001
 #
-# WEBSERVER_ROOT:
 # This is the absolute path where Caravan will install your site within the container.
+#container_webserver_root:          "/var/www/"
 
 # Variables for running Drupal Caravan against a container
 # ========================================================
@@ -104,13 +88,13 @@
 # These variables will be used against all containers within the docker-hosts
 # inventory group.  This group is dynamically created by the docker.py script.
 #
-# SITE_INSTALL_DIRECTORY:
 # Since we have chosen to build sites with composer, we have separated files
 # required to build a site from the site files. Site files are installed in a
 # sub-directory, within the build repository. For example, /var/www/{{ sitename }}/docroot.
 # Do not include any preceding nor trailing slashes.
+#container_site_install_directory:  "docroot"
 #
-# PHP_VERSION:
 # Acquia BLT has a dependency that appears to require PHP7. However, some
 # parts of their infrastructure are supposedly still on PHP5.6. We'll be using
 # PHP 7.0 by default, but you can change this value to your need.
+#container_php_version:             "7.0"
