@@ -24,37 +24,13 @@
 # - BLT seems to believe this is a "staging" site. The masthead should say "local".
 #   Shea suggests: When you get the `staging` title that means that the config import failed,
 #   but the db import succeeded. That could be indicative of an error in the config and not the process.
-# - BLT currently has a bug, that is not allowing sync:refresh to run without user input
-#   https://github.com/acquia/blt/issues/1852
-#   https://github.com/acquia/blt/pull/1862
+# - BLT still will not refresh the files directory without input. To get around this,
+#   I am first deleting the files directory, before running `sync:refresh`.
 
-#- name: install site with BLT
-#  shell:
-#    cmd: vendor/bin/blt sync:refresh -Dsync.files=true -n -y
-#    chdir: "{{ container_webserver_root }}{{ sitename }}"
+- name: delete existing files directory
+  command: rm -rf "{{ container_webserver_root}}{{ sitename }}/{{ site-install_directory }}/sites/default/files"
 
-# Note: whether a command runs with `y` or `yes` differs between them.
-- name: Run BLT drush commands
+- name: install site with BLT
   shell:
-    cmd: vendor/bin/drush -y {{ item }}
+    cmd: vendor/bin/blt sync:refresh -Dsync.files=true -n -y
     chdir: "{{ container_webserver_root }}{{ sitename }}"
-  with_items:
-    - cache-clear drush
-    - "sql-sync @earth.test @{{ sitename }}.local --structure-tables-key=lightweight --create-db --sanitize"
-    - cache-clear drush
-# Removed files from sync destination path, it was installing files in files, ie. sites/default/files/files
-    - "rsync '@earth.test:%files' {{ container_webserver_root }}{{ sitename }}/{{ container_site_install_directory }}/sites/default/ --exclude-paths='styles:css:js'"
-
-# Note: these need to be run in the docroot directory
-- name: Run BLT site-specific drush commands
-  shell:
-    cmd: ../vendor/bin/drush -y {{ item }} --uri=default
-    chdir: "{{ container_webserver_root }}{{ sitename }}/{{ container_site_install_directory }}"
-  with_items:
-    - cc drush
-    - cache-rebuild
-    - updb
-    - pm-enable config_split
-    - config-import sync
-    - features-import-all
-    - cache-rebuild
