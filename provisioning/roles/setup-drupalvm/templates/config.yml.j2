@@ -29,3 +29,13 @@ php_memory_limit: "1024M"
 # Set selenium version and do not install Chrome yet
 selenium_install_chrome: yes
 selenium_version: "2.47.1"
+
+# Extra vhost for viewing test results
+apache_vhosts:
+  - servername: "{{ sitename }}.local"
+    serveralias: "www.{{ sitename }}.local"
+    documentroot: "{{ container_webserver_root }}{{ sitename }}/{{ container_site_install_directory }}"
+    extra_parameters: \"{{ apache_vhost_php_fpm_parameters }}\"
+
+  - servername: "behat.{{ sitename }}.local"
+    documentroot: "{{ container_webserver_root }}{{ sitename }}/reports/behat"

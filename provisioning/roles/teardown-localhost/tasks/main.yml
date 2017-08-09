@@ -28,9 +28,12 @@
   lineinfile:
     path: /etc/hosts
     insertafter: EOF
-    line: "{{ container_ip_address }}  {{ sitename }}.local"
+    line: "{{ container_ip_address }}  {{ item }}.local"
     state: absent
   become: true
+  with_items:
+    - "{{ sitename }}"
+    - "behat.{{ sitename }}"
 
 - name: Remove IP alias
   command: "ifconfig lo0 -alias {{ container_ip_address }}"
