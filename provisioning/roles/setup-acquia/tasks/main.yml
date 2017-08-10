@@ -58,3 +58,9 @@
     - 'setup:git-hooks'
     - 'setup:hash-salt'
   become: false
+
+- name: Update local settings file
+  replace:
+  path: "{{ container_webserver_root}}{{ sitename }}/{{ container_site_install_directory }}/sites/default/settings/local.settings.php"
+  regexp: "\'drupal\'"
+  replace: "\'{{ sitename }}\'"
