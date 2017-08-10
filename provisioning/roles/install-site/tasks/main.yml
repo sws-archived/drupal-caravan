@@ -24,10 +24,14 @@
 # - BLT seems to believe this is a "staging" site. The masthead should say "local".
 #   Shea suggests: When you get the `staging` title that means that the config import failed,
 #   but the db import succeeded. That could be indicative of an error in the config and not the process.
-# - BLT still will not refresh the files directory without input, ie. -Dsync.files=true. To get around this,
-#   I am first deleting the files directory, before running `sync:refresh`.
+# - BLT still will not refresh the files directory without input, ie. -Dsync.files=true.
+
+- name: Run BLT drush commands for syncing files
+  shell:
+    cmd: "vendor/bin/drush -y rsync '@earth.test:%files' {{ container_webserver_root }}{{ sitename }}/{{ container_site_install_directory }}/sites/default/ --exclude-paths='styles:css:js'"
+    chdir: "{{ container_webserver_root }}{{ sitename }}"
 
 - name: install site with BLT
   shell:
-    cmd: vendor/bin/blt sync:refresh -Dsync.files=true -y
+    cmd: vendor/bin/blt sync:refresh -y
     chdir: "{{ container_webserver_root }}{{ sitename }}"
