@@ -31,3 +31,8 @@
     dest: "{{ container_webserver_root }}{{ sitename }}/vendor/su-sws/linky_clicky"
     version: 6.x
     update: yes
+
+- name: Copy behat config file
+  template:
+    src: behat.blt.yml.j2
+    dest: "{{ container_webserver_root }}{{ sitename }}/vendor/su-sws/linky_clicky/behat.blt.yml"

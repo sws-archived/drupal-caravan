@@ -1,0 +1,96 @@
+imports:
+  - ../../../tests/behat/local.yml
+  - drupal.extension.yml
+
+default:
+  extensions:
+    emuse\BehatHTMLFormatter\BehatHTMLFormatterExtension:
+      name: html
+      renderer: Twig,Behat2
+      file_name: index
+      print_args: true
+      print_outp: true
+      loop_break: true
+  formatters:
+    html:
+      output_path: "{{ container_webserver_root }}{{ sitename }}/reports/behat/"
+local:
+  formatters:
+    html:
+      output_path: "{{ container_webserver_root }}{{ sitename }}/reports/behat/"
+  extensions:
+    emuse\BehatHTMLFormatter\BehatHTMLFormatterExtension:
+      name: html
+      renderer: Twig,Behat2
+      file_name: index
+      print_args: true
+      print_outp: true
+      loop_break: true
+  suites:
+    # ALL THE THINGS
+    all:
+      contexts:
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - Drupal\DrupalExtension\Context\MarkupContext
+        - Drupal\DrupalExtension\Context\BatchContext
+        - FeatureContext
+        - SWSFeatureContext
+        - SWSMinkContext
+        - SWSDrupalContext
+      paths:
+        features: "{{ container_webserver_root }}{{ sitename }}"
+        bootstrap: "{{ container_webserver_root }}{{ sitename }}/vendor/su-sws/linky_clicky/features/bootstrap"
+    default:
+      paths:
+        features: "{{ container_webserver_root }}{{ sitename }}"
+        bootstrap: "{{ container_webserver_root }}{{ sitename }}/vendor/su-sws/linky_clicky/features/bootstrap"
+      filters:
+        tags: "safe&&~destructive"
+      contexts:
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - Drupal\DrupalExtension\Context\MarkupContext
+        - Drupal\DrupalExtension\Context\BatchContext
+        - FeatureContext
+        - SWSFeatureContext
+        - SWSMinkContext
+        - SWSDrupalContext
+
+    # --- Lifecyle Phases Suites ---
+    # Tests that are meant for development sites and can make changes.
+    dev:
+      filters:
+        tags: '~live&&~launch'
+        #'safe,deploy,dev'
+      contexts:
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - Drupal\DrupalExtension\Context\MarkupContext
+        - Drupal\DrupalExtension\Context\BatchContext
+        - SWSFeatureContext
+        - SWSMinkContext
+        - SWSDrupalContext
+    # Did the site deploy correctly? Are all the pages & placeholder content in place?
+    deploy:
+      filters:
+        tags: 'safe,deploy&&~destructive&&~dev&&~launch&&~live'
+      contexts:
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - Drupal\DrupalExtension\Context\MarkupContext
+        - Drupal\DrupalExtension\Context\BatchContext
+        - SWSFeatureContext
+        - SWSMinkContext
+        - SWSDrupalContext
+    live:
+      filters:
+        tags: 'safe,live&&~launch&&~destructive&&~deploy&&~dev'
+      contexts:
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - Drupal\DrupalExtension\Context\MarkupContext
+        - Drupal\DrupalExtension\Context\BatchContext
+        - SWSFeatureContext
+        - SWSMinkContext
+        - SWSDrupalContext
