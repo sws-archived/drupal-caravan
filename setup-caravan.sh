@@ -54,8 +54,10 @@ else
   -c docker
 fi
 
-echo "Running behat tests"
-docker exec -it se3_blt /var/www/se3_blt/vendor/bin/blt sws:behat
+read -p "Do you want to run all behat tests at this time? " -n 1 -r
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  docker exec -it se3_blt /var/www/se3_blt/vendor/bin/blt sws:behat
+fi
 
 echo "Visit http://[SITENAME].local:9000"
 echo "Or log into your container with: docker exec -it [SITENAME] bash"
