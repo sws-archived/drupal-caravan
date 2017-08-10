@@ -27,3 +27,5 @@
   shell:
     cmd: vendor/bin/blt sws:behat
     chdir: "{{ container_webserver_root }}{{ sitename }}"
+    async: 45
+    poll: 5

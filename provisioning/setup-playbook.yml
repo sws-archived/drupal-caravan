@@ -71,4 +71,3 @@
     - setup-acquia
     - install-site
     - setup-behat
-    - run-behat
