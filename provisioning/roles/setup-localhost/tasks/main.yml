@@ -40,3 +40,4 @@
 - name: Add IP alias
   command: "ifconfig lo0 alias {{ container_ip_address }}/24"
   become: true
+  when: ansible_os_family == "Darwin"
