@@ -22,8 +22,12 @@
 # Acquia BLT in vendor directory.
 #
 # KNOWN ISSUES:
-# BLT has a requirement not satisfied by composer, ie. php7.0-bz2
-# See: https://github.com/acquia/blt/issues/1033
+# - BLT has a requirement not satisfied by composer, ie. php7.0-bz2
+#   See: https://github.com/acquia/blt/issues/1033
+# - If you are not able to clone from Acquia, check whether the user has the
+#   Senior Developer role and whether the id_rsa file is set to 600.
+#   Initially, this was set with Ansible's file module, but that had unexpected
+#   results, so I am changing it back to a regular command.
 
 - name: Copy local site alias
   template:
@@ -31,9 +35,7 @@
     dest: "{{ container_webserver_root }}{{ sitename }}/drush/site-aliases/caravan.alises.drushrc.php"
 
 - name: Change key permissions
-  file:
-    path: /root/.ssh/id_rsa
-    mode: 600
+  command: "chmod 600 /root/.ssh/id_rsa"
 
 - name: Save Acquia server as known_host
   shell: "ssh-keyscan {{ container_production_host_address }} >> /root/.ssh/known_hosts"

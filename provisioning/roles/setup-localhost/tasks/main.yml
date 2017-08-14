@@ -23,7 +23,9 @@
 # Permission to edit /etc/hosts
 #
 # KNOWN ISSUES:
-# --
+# If someone is not able to restart the container on a Mac, check whether the
+# ifconfig lo0 alias was actually created.
+#
 
 - name: Add container IP to /etc/hosts
   lineinfile:
@@ -38,4 +40,3 @@
 - name: Add IP alias
   command: "ifconfig lo0 alias {{ container_ip_address }}/24"
   become: true
-  when: ansible_os_family == "Darwin"
