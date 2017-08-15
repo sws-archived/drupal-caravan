@@ -2,6 +2,11 @@
     "name": "su-sws/drupal-caravan",
     "description": "All the tools you need for running behat and visual regression tests within your site directory.",
     "type": "project",
+    "repositories": [
+      {
+        "type": "vcs", "url": "https://github.com/SU-SWS/linky_clicky"
+      }
+    ],
     "require": {
       "behat/behat": "^3.3",
       "behat/mink": "^1.7",
@@ -17,7 +22,8 @@
       "psr/log":  "*",
       "emuse/behat-html-formatter": "dev-master",
       "lakion/mink-debug-extension": "^1.2",
-      "geerlingguy/drupal-vm": "4.5"
+      "geerlingguy/drupal-vm": "4.5",
+      "su-sws/linky_clicky": "6.x-dev"
     },
     "authors": [
         {
