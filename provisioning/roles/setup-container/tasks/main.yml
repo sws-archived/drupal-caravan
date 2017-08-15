@@ -51,6 +51,7 @@
       - "{{ localhost_home_path }}/.ssh/{{ localhost_ssh_key_name }}.pub:/root/.ssh/id_rsa.pub"
     state: started
     restart: yes
+    restart_policy: always
     privileged: yes
     command: /lib/systemd/systemd
 
