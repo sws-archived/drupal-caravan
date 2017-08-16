@@ -23,6 +23,8 @@
 # environment, for example, container name, database name, webroot, etc.
 sitename:                          "caravan"
 #
+localhost_project_path:            "/home/travis/build/stanford-earth/SE3_BLT"
+#
 # Enter the absolute path to your local copy of the build repository.
 # Do not include /docroot in the path.  This directory should include
 # the composer.json project for this project.
