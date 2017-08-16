@@ -54,6 +54,22 @@
     restart_policy: always
     privileged: yes
     command: /lib/systemd/systemd
+  when: ansible_os_family == "Darwin"
+
+- name: Create a container
+  docker_container:
+    name: "{{ sitename }}"
+    image: "geerlingguy/docker-{{ container_distro }}-ansible:latest"
+    volumes:
+      - "{{ localhost_project_path }}:{{ container_webserver_root }}{{ sitename }}/"
+      - "{{ localhost_home_path }}/.ssh/{{ localhost_ssh_key_name }}:/root/.ssh/id_rsa"
+      - "{{ localhost_home_path }}/.ssh/{{ localhost_ssh_key_name }}.pub:/root/.ssh/id_rsa.pub"
+    state: started
+    restart: yes
+    restart_policy: always
+    privileged: yes
+    command: /lib/systemd/systemd
+  when: ansible_distribution == "Ubuntu"
 
 - name: Refresh Ansible inventory
   meta: refresh_inventory
