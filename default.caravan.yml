@@ -21,7 +21,7 @@
 # Enter a nickname for your project. Use underscores, not hyphens.
 # This value will be used to determine a number of variables in the created
 # environment, for example, container name, database name, webroot, etc.
-#sitename:                          "caravan"
+sitename:                          "caravan"
 #
 # Enter the absolute path to your local copy of the build repository.
 # Do not include /docroot in the path.  This directory should include
