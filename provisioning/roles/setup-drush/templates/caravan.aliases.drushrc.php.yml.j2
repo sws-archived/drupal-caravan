@@ -6,11 +6,11 @@ $aliases['{{ sitename }}.local'] = array(
 );
 
 # from https://www.chapterthree.com/blog/drupal-development-docker-compose
-$aliases['example'] = array(
-  'remote-host' => 'local.dev',
+$aliases['{{ sitename }}.docker'] = array(
+  'remote-host' => '{{ container_ip_address }}',
   'remote-user' => 'root',
-  'ssh-options' => '-p 32779 -o \'UserKnownHostsFile /dev/null\' -o \'StrictHostKeyChecking no\' -o \'PasswordAuthentication no\' -o \'IdentitiesOnly yes\' -o \'LogLevel FATAL\'',
-  'root' => '/var/www',
+  'ssh-options' => '-p {{ localhost_ssh_port }} -o \'UserKnownHostsFile /dev/null\' -o \'StrictHostKeyChecking no\' -o \'PasswordAuthentication no\' -o \'IdentitiesOnly yes\' -o \'LogLevel FATAL\'',
+  'root' => '{{ container_webserver_root }}{{ sitename }}/{{ container_site_install_directory }}',
   'path-aliases' =>
   array (
     '%drush-script' => 'drush-remote',
