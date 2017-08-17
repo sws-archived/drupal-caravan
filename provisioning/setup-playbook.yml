@@ -70,4 +70,5 @@
   roles:
     - setup-acquia
     - install-site
+    - setup-drush
     - setup-behat

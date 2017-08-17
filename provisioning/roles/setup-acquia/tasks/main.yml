@@ -29,11 +29,6 @@
 #   Initially, this was set with Ansible's file module, but that had unexpected
 #   results, so I am changing it back to a regular command.
 
-- name: Copy local site alias
-  template:
-    src: "caravan.aliases.drushrc.php.yml.j2"
-    dest: "{{ container_webserver_root }}{{ sitename }}/drush/site-aliases/caravan.alises.drushrc.php"
-
 - name: Change key permissions
   command: "chmod 600 /root/.ssh/id_rsa"
 
