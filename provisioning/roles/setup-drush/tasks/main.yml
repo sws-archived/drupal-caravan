@@ -28,7 +28,7 @@
 - name: Copy local site alias
   template:
     src: "caravan.aliases.drushrc.php.yml.j2"
-    dest: "{{ container_webserver_root }}{{ sitename }}/drush/site-aliases/caravan.alises.drushrc.php"
+    dest: "{{ container_webserver_root }}{{ sitename }}/drush/site-aliases/caravan.aliases.drushrc.php"
 
 - name: Fix local site url for alias
   template:

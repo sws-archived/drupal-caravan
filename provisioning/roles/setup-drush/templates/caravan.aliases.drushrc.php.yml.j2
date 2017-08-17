@@ -6,14 +6,14 @@ $aliases['{{ sitename }}.local'] = array(
 );
 
 # from https://www.chapterthree.com/blog/drupal-development-docker-compose
-$aliases['{{ sitename }}.docker'] = array(
-  'remote-host' => '{{ container_ip_address }}',
+$aliases['se3_blt.docker'] = array(
+  'uri' => 'http://se3_blt.local:9000',
+  'root' => '/var/www/se3_blt/docroot',
   'remote-user' => 'root',
-  'ssh-options' => '-p {{ localhost_ssh_port }} -o \'UserKnownHostsFile /dev/null\' -o \'StrictHostKeyChecking no\' -o \'PasswordAuthentication no\' -o \'IdentitiesOnly yes\' -o \'LogLevel FATAL\'',
-  'root' => '{{ container_webserver_root }}{{ sitename }}/{{ container_site_install_directory }}',
+  'remote-host' => '192.168.88.88',
+  'ssh-options' => '-p 2020 -o PasswordAuthentication=no -i ~/.ssh/acquia_id_rsa',
   'path-aliases' =>
   array (
-    '%drush-script' => 'drush-remote',
+    '%drush' => '/var/www/se3_blt/vendor/bin/drush',
   ),
-  'uri' => 'http://{{ sitename }}:{{ localhost_http_port }}',
 );
