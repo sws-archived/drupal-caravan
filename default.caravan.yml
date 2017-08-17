@@ -24,6 +24,7 @@
 sitename:                          "caravan"
 #
 localhost_project_path:            "/home/travis/build/stanford-earth/SE3_BLT"
+localhost_ssh_port:                "9003"
 #
 # Enter the absolute path to your local copy of the build repository.
 # Do not include /docroot in the path.  This directory should include
