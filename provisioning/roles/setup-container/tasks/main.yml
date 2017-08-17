@@ -45,7 +45,7 @@
     ports:
       - "{{ container_ip_address }}:{{ localhost_http_port }}:80"
       - "{{ container_ip_address }}:{{ localhost_https_port }}:433"
-      - "{{ container_ip_address }}:{{ localhost_ssh_port }}:22"
+      - "{{ container_ip_address }}:{{ localhost_ssh_port }}:2020"
     volumes:
       - "{{ localhost_project_path }}:{{ container_webserver_root }}{{ sitename }}/"
       - "{{ localhost_home_path }}/.ssh/{{ localhost_ssh_key_name }}:/root/.ssh/id_rsa"
