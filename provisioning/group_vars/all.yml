@@ -3,6 +3,7 @@
 # =================================================
 
 sitename:                          "caravan"
+localhost_http_port:               9000
 container_production_host_address: "earthstg.ssh.prod.acquia-sites.com"
 container_webserver_root:          "/var/www/"
 container_site_install_directory:  "docroot"
