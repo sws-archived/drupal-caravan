@@ -2,8 +2,8 @@
 # https://github.com/SU-SWS/drupal-caravan
 # ========================================
 
-localhost_home_path:    "/Users/johndoe"
-localhost_project_path: "{{ localhost_home_path }}/Sites/{{ sitename }}"
+localhost_home_path:    "/root"
+localhost_project_path: "{{ localhost_home_path }}/{{ sitename }}"
 localhost_ssh_key_name: "acquia_id_rsa"
 container_distro:       "ubuntu1604"
 container_ip_address:   "192.168.88.88"
