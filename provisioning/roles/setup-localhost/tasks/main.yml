@@ -46,3 +46,7 @@
   group: wheel
   mode: 0644
   when: ansible_os_family == "Darwin"
+
+- name: Load IP alias LaunchAgent
+  command: "launchctl load {{ localhost_home_path}}/Library/LaunchAgents/caravan.docker.app.plist"
+  become: true
