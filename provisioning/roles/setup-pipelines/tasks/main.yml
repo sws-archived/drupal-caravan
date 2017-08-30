@@ -1,0 +1,67 @@
+---
+# Ansible role that uses BLT to setup site settings
+# https://github.com/SU-SWS/drupal-caravan
+# =================================================
+#
+# The purpose of this role is to instantiate a STATE, in this case the state of
+# settings files in the build repository.
+#
+# INPUTS:
+#   sitename
+#   container_webserver_root
+#   container_production_host_address
+#   container_php_version
+#
+# OUTPUTS:
+# --
+#
+# ALTERNATIVE ROLES:
+# --
+#
+# REQUIREMENTS:
+# Acquia BLT in vendor directory.
+#
+# KNOWN ISSUES:
+# - BLT has a requirement not satisfied by composer, ie. php7.0-bz2
+#   See: https://github.com/acquia/blt/issues/1033
+# - If you are not able to clone from Acquia, check whether the user has the
+#   Senior Developer role and whether the id_rsa file is set to 600.
+#   Initially, this was set with Ansible's file module, but that had unexpected
+#   results, so I am changing it back to a regular command.
+
+- name: Install Acquia Pipelines
+
+- name: Copy acquia-pipelines.yml file
+
+# And then .travis.yml will fire it off if it reaches the travis deploy stage.
+# pipelines.yml file has a pipelines-deploy if in the commit message
+# and a pr-merge push to the dev environment.
+
+- name: Change key permissions
+  command: "chmod 600 /root/.ssh/id_rsa"
+
+- name: Save Acquia server as known_host
+  shell: "ssh-keyscan {{ container_production_host_address }} >> /root/.ssh/known_hosts"
+
+- name: Setup drupal-scaffold
+  shell:
+    cmd: composer drupal-scaffold
+    chdir: "{{ container_webserver_root }}{{ sitename }}"
+
+# See: https://github.com/acquia/blt/issues/1033
+# PHP extension for VM's
+- name: Install bz2 for PHP
+  apt:
+    name: "php{{ container_php_version }}-bz2"
+    state: present
+
+- name: Setup site settings files
+  shell:
+    cmd: vendor/bin/blt {{ item }}
+    chdir: "{{ container_webserver_root }}{{ sitename }}"
+  with_items:
+    - 'setup:settings'
+    - 'setup:build'
+    - 'setup:git-hooks'
+    - 'setup:hash-salt'
+  become: false
