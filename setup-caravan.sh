@@ -54,6 +54,10 @@ else
   -c docker
 fi
 
+echo "Adding alias for running drush in a docker container"
+echo "alias docker-drush=/usr/local/bin/docker-drush.sh" >> ~/.bash_profile
+source ~/.bash_profile
+
 read -p "Do you want to run all behat tests at this time? " -n 1 -r
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   docker exec -it se3_blt /var/www/se3_blt/vendor/bin/blt sws:behat
