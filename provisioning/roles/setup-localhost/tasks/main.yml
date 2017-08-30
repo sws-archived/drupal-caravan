@@ -49,3 +49,9 @@
 - name: Load IP alias LaunchAgent
   command: "launchctl load {{ localhost_home_path}}/Library/LaunchAgents/caravan.docker.app.plist"
   become: true
+  when: ansible_os_family == "Darwin"
+
+- name: create IP alias on Ubuntu
+  command: "ifconfig lo0 alias {{ container_ip_address }}/24"
+  become: true
+  when: ansible_os_family == "Debian"
