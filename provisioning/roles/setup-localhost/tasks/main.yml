@@ -37,14 +37,13 @@
     - "{{ sitename }}"
     - "behat.{{ sitename }}"
 
-# From https://gist.github.com/brandt/c2f9e8277c90a1c284770c7ca7966226
 - name: Add IP alias
   template:
     src: caravan.docker.app.plist
     dest: "{{ localhost_home_path }}/Library/LaunchAgents/caravan.docker.app.plist"
-  owner: root
-  group: wheel
-  mode: 0644
+    owner: root
+    group: wheel
+    mode: 0644
   when: ansible_os_family == "Darwin"
 
 - name: Load IP alias LaunchAgent
