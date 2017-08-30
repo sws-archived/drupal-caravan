@@ -39,7 +39,7 @@
 
 - name: Add IP alias
   template:
-    src: caravan.docker.app.plist
+    src: caravan.docker.app.plist.j2
     dest: "{{ localhost_home_path }}/Library/LaunchAgents/caravan.docker.app.plist"
     owner: root
     group: wheel
