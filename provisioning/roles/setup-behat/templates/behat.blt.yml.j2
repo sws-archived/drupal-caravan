@@ -4,6 +4,8 @@ imports:
 
 default:
   extensions:
+    Behat\MinkExtension:
+      base_url: http://127.0.0.1
     emuse\BehatHTMLFormatter\BehatHTMLFormatterExtension:
       name: html
       renderer: Twig,Behat2
@@ -22,6 +24,8 @@ local:
     html:
       output_path: "{{ container_webserver_root }}{{ sitename }}/reports/behat/"
   extensions:
+    Behat\MinkExtension:
+      base_url: http://127.0.0.1
     emuse\BehatHTMLFormatter\BehatHTMLFormatterExtension:
       name: html
       renderer: Twig,Behat2
