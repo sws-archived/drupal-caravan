@@ -22,6 +22,7 @@
 #     On the one hand, that allows us to be very specific about what those
 #     values should be on different servers. On the other, it means that roles
 #     are not technically self-sufficient.
+#   - Install site comes last because that process blows away drupal-caravan.
 #
 # PLAY 2: Setup localhost and create container
 # ============================================
@@ -69,6 +70,6 @@
 
   roles:
     - setup-acquia
-    - install-site
     - setup-drush
     - setup-behat
+    - install-site
