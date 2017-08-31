@@ -52,6 +52,6 @@
   when: ansible_os_family == "Darwin"
 
 - name: create IP alias on Ubuntu
-  command: "ifconfig lo0 alias {{ container_ip_address }}/24"
+  command: "ifconfig eth0:0 {{ container_ip_address }}"
   become: true
   when: ansible_os_family == "Debian"
