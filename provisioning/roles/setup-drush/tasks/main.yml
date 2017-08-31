@@ -37,3 +37,6 @@
 
 - name: Test alias
   command: "drush @{{ sitename }}.local uli"
+  register: drush_uli
+
+- debug: msg="{{ drush_uli.stdout }}"
