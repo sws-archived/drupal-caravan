@@ -1,0 +1,35 @@
+---
+# Ansible role for setting up localhost to accomodate migration.
+# https://github.com/SU-SWS/drupal-caravan
+# =============================================================
+#
+# The purpose of this role is to instantiate a STATE, in this case the state of
+# a directory on locahost, where we can temporarily sync a site database and files.
+#
+# INPUTS:
+# sitename
+# stack
+# localhost_home
+#
+# OUTPUTS:
+# --
+#
+# ALTERNATIVE ROLES:
+# --
+#
+# REQUIREMENTS:
+# --
+#
+# KNOWN ISSUES:
+# --
+#
+- name: Create sitename directory in tmp
+  file:
+    path: "/tmp/{{ sitename }}"
+    state: directory
+    mode: 0755
+
+- name: Update drush aliases
+  template:
+    src: "cardinal.aliases.drushrc.php"
+    dest: "{{ localhost_home }}/.drush/cardinal.aliases.drushrc.php"

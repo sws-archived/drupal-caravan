@@ -1,0 +1,159 @@
+<?php
+
+if (!isset($drush_major_version)) {
+  $drush_version_components = explode('.', DRUSH_VERSION);
+  $drush_major_version = $drush_version_components[0];
+}
+// Site cardinal, environment 01dev
+$aliases['01dev'] = array(
+  'root' => '/var/www/html/cardinal.01dev/docroot',
+  'ac-site' => 'cardinal',
+  'ac-env' => '01dev',
+  'ac-realm' => 'enterprise-g1',
+  'uri' => 'cardinal01dev.enterprise-g1.acquia-sites.com',
+  'remote-host' => 'cardinal01dev.ssh.enterprise-g1.acquia-sites.com',
+  'remote-user' => 'cardinal.01dev',
+  'path-aliases' => array(
+    '%drush-script' => 'drush' . $drush_major_version,
+  )
+);
+$aliases['01dev.livedev'] = array(
+  'parent' => '@cardinal.01dev',
+  'root' => '/mnt/gfs/cardinal.01dev/livedev/docroot',
+);
+
+if (!isset($drush_major_version)) {
+  $drush_version_components = explode('.', DRUSH_VERSION);
+  $drush_major_version = $drush_version_components[0];
+}
+// Site cardinal, environment 01devup
+$aliases['01devup'] = array(
+  'root' => '/var/www/html/cardinal.01devup/docroot',
+  'ac-site' => 'cardinal',
+  'ac-env' => '01devup',
+  'ac-realm' => 'enterprise-g1',
+  'uri' => 'cardinal01devup.enterprise-g1.acquia-sites.com',
+  'remote-host' => 'cardinal01devup.ssh.enterprise-g1.acquia-sites.com',
+  'remote-user' => 'cardinal.01devup',
+  'path-aliases' => array(
+    '%drush-script' => 'drush' . $drush_major_version,
+  )
+);
+$aliases['01devup.livedev'] = array(
+  'parent' => '@cardinal.01devup',
+  'root' => '/mnt/gfs/cardinal.01devup/livedev/docroot',
+);
+
+if (!isset($drush_major_version)) {
+  $drush_version_components = explode('.', DRUSH_VERSION);
+  $drush_major_version = $drush_version_components[0];
+}
+// Site cardinal, environment 01live
+$aliases['01live'] = array(
+  'root' => '/var/www/html/cardinal.01live/docroot',
+  'ac-site' => 'cardinal',
+  'ac-env' => '01live',
+  'ac-realm' => 'enterprise-g1',
+  'uri' => 'cardinal01live.enterprise-g1.acquia-sites.com',
+  'remote-host' => 'cardinal01live.ssh.enterprise-g1.acquia-sites.com',
+  'remote-user' => 'cardinal.01live',
+  'path-aliases' => array(
+    '%drush-script' => 'drush' . $drush_major_version,
+  )
+);
+$aliases['01live.livedev'] = array(
+  'parent' => '@cardinal.01live',
+  'root' => '/mnt/gfs/cardinal.01live/livedev/docroot',
+);
+
+if (!isset($drush_major_version)) {
+  $drush_version_components = explode('.', DRUSH_VERSION);
+  $drush_major_version = $drush_version_components[0];
+}
+// Site cardinal, environment 01test
+$aliases['01test'] = array(
+  'root' => '/var/www/html/cardinal.01test/docroot',
+  'ac-site' => 'cardinal',
+  'ac-env' => '01test',
+  'ac-realm' => 'enterprise-g1',
+  'uri' => 'cardinal01test.enterprise-g1.acquia-sites.com',
+  'remote-host' => 'cardinal01test.ssh.enterprise-g1.acquia-sites.com',
+  'remote-user' => 'cardinal.01test',
+  'path-aliases' => array(
+    '%drush-script' => 'drush' . $drush_major_version,
+  )
+);
+$aliases['01test.livedev'] = array(
+  'parent' => '@cardinal.01test',
+  'root' => '/mnt/gfs/cardinal.01test/livedev/docroot',
+);
+
+if (!isset($drush_major_version)) {
+  $drush_version_components = explode('.', DRUSH_VERSION);
+  $drush_major_version = $drush_version_components[0];
+}
+// Site cardinal, environment 01testup
+$aliases['01testup'] = array(
+  'root' => '/var/www/html/cardinal.01testup/docroot',
+  'ac-site' => 'cardinal',
+  'ac-env' => '01testup',
+  'ac-realm' => 'enterprise-g1',
+  'uri' => 'cardinal01testup.enterprise-g1.acquia-sites.com',
+  'remote-host' => 'cardinal01testup.ssh.enterprise-g1.acquia-sites.com',
+  'remote-user' => 'cardinal.01testup',
+  'path-aliases' => array(
+    '%drush-script' => 'drush' . $drush_major_version,
+  )
+);
+$aliases['01testup.livedev'] = array(
+  'parent' => '@cardinal.01testup',
+  'root' => '/mnt/gfs/cardinal.01testup/livedev/docroot',
+);
+
+if (!isset($drush_major_version)) {
+  $drush_version_components = explode('.', DRUSH_VERSION);
+  $drush_major_version = $drush_version_components[0];
+}
+// Site cardinal, environment 01update
+$aliases['01update'] = array(
+  'root' => '/var/www/html/cardinal.01update/docroot',
+  'ac-site' => 'cardinal',
+  'ac-env' => '01update',
+  'ac-realm' => 'enterprise-g1',
+  'uri' => 'cardinal01update.enterprise-g1.acquia-sites.com',
+  'remote-host' => 'cardinal01update.ssh.enterprise-g1.acquia-sites.com',
+  'remote-user' => 'cardinal.01update',
+  'path-aliases' => array(
+    '%drush-script' => 'drush' . $drush_major_version,
+  )
+);
+$aliases['01update.livedev'] = array(
+  'parent' => '@cardinal.01update',
+  'root' => '/mnt/gfs/cardinal.01update/livedev/docroot',
+);
+// Site cardinal, environment jaaker20170912
+$aliases['01live.jaaker'] = array(
+  'root' => '/var/www/html/cardinal.01live/docroot',
+  'ac-site' => 'cardinal',
+  'ac-env' => '01live',
+  'ac-realm' => 'enterprise-g1',
+  'uri' => 'jaaker20170912.stanford.acsitefactory.com',
+  'remote-host' => 'cardinal01live.ssh.enterprise-g1.acquia-sites.com',
+  'remote-user' => 'cardinal.01live',
+  'path-aliases' => array(
+    '%drush-script' => 'drush' . $drush_major_version,
+  )
+);
+// Site cardinal, environment physics20170912
+$aliases['01live.physics'] = array(
+  'root' => '/var/www/html/cardinal.01live/docroot',
+  'ac-site' => 'cardinal',
+  'ac-env' => '01live',
+  'ac-realm' => 'enterprise-g1',
+  'uri' => 'physics20170912.stanford.acsitefactory.com',
+  'remote-host' => 'cardinal01live.ssh.enterprise-g1.acquia-sites.com',
+  'remote-user' => 'cardinal.01live',
+  'path-aliases' => array(
+    '%drush-script' => 'drush' . $drush_major_version,
+  )
+);

@@ -1,2 +1,11 @@
 [local]
 127.0.0.1
+
+[people]
+
+[pilot]
+people2.stanford.edu sitename=jaacker profile=stanford stack=cardinal
+
+[sites]
+
+[sws-sites]
