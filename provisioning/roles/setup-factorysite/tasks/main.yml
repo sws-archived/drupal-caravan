@@ -59,14 +59,5 @@
   register: site_created
   when: sitename not in existing_sites | json_query('json.sites[*].site')
 
-- pause: minutes=5
-
-- name: Poll ACSF until site is complete, then move on
-  command: "drush @{{ stack }}.01live.{{ sitename }} vget site_name"
-  register: installed_sitename
-  until: installed_sitename == "{{ sitename }}"
-  retries: 30
-  delay: 10
-
-- debug:
-    var: installed_sitename
+- pause: minutes=6
+# - name: Check task

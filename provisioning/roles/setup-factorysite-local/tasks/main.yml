@@ -29,6 +29,12 @@
     state: directory
     mode: 0755
 
+- name: Create sitename directory in tmp
+  file:
+    path: "/tmp/{{ sitename }}/files"
+    state: directory
+    mode: 0755
+
 - name: Update drush aliases
   template:
     src: "acsf.aliases.drushrc.php"

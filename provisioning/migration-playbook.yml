@@ -23,7 +23,5 @@
   roles:
     - setup-factorysite
     - setup-factorysite-local
-#    - sync-factorysite-database
-#    - sync-factorysite-files
-#    - cleanup-factorysite
-#    - cleanup-factorysite-local
+    - sync-factorysite
+    - cleanup-factorysite-local

@@ -42,9 +42,6 @@ if ($parts[0] !== "@" . $alias_key) {
 $stack = $parts[1];
 $site = $parts[2];
 
-// Sanitize the site name for drush rsync.
-$site = array_shift(explode(":", $site));
-
 // Define the alias.
 $aliases[$stack . "." . $site] = array(
   'root' => '/var/www/html/' . $stack . '.01live/docroot',
