@@ -7,6 +7,8 @@
 # then sync a site from the SWS legacy hosting platform to the newly created
 # site.
 #
+# Can be run with: ansible-playbook -i inventory/hosts -l local -c local migration-playbook.yml -vvvv
+#
 # KNOWN ISSUES:
 # --
 #
@@ -20,7 +22,7 @@
   roles:
     - setup-factorysite
     - setup-factorysite-local
-    - sync-factorysite-database
-    - sync-factorysite-files
-    - cleanup-factorysite
-    - cleanup-factorysite-local
+#    - sync-factorysite-database
+#    - sync-factorysite-files
+#    - cleanup-factorysite
+#    - cleanup-factorysite-local

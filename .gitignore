@@ -2,3 +2,4 @@
 *.DS_Store
 *.retry
 caravan.yml
+provisioning/migration_vars.yml

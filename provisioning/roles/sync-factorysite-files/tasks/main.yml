@@ -1,0 +1,26 @@
+---
+# Ansible role for syncing files between Sites and Site Factory.
+# https://github.com/SU-SWS/drupal-caravan
+# ==============================================================
+#
+# This role syncs the site files from Sites to Site Factory. To do this,
+# it will first save a copy locally and then rsync the local copy to
+# Site Factory.
+#
+# INPUTS:
+#   sitename
+#
+# OUTPUTS:
+# --
+#
+# ALTERNATIVE ROLES:
+# --
+#
+# REQUIREMENTS:
+# --
+#
+# KNOWN ISSUES:
+# --
+
+- name: 
+  command: 

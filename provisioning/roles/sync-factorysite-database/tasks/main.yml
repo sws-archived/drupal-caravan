@@ -1,0 +1,35 @@
+---
+# Ansible role for syncing the database between Sites and Site Factory.
+# https://github.com/SU-SWS/drupal-caravan
+# =====================================================================
+#
+# This role syncs the database from Sites to Site Factory. To do this,
+# it will first save a copy locally and then rsync the local copy to
+# Site Factory.
+#
+# INPUTS:
+#   sitename
+#   server_alias
+#   site_prefix
+#   stack
+#
+# OUTPUTS:
+# --
+#
+# ALTERNATIVE ROLES:
+# --
+#
+# REQUIREMENTS:
+# --
+#
+# KNOWN ISSUES:
+# --
+
+- name: Download copy of database from sites
+  command: "drush @{{ server_alias }}.{{ site_prefix }}_{{ sitename }} sql-dump > /tmp/{{ sitename }}/dbdump.sql"
+
+- name: Drop database in Site Factory and install new database
+  command: "drush @acsf.{{ stack }}.{{ sitename }} {{ item }}"
+  with_items:
+    - "-y sql-drop"
+    - "sqlc < /tmp/{{ sitename }}/dbdump.sql"
