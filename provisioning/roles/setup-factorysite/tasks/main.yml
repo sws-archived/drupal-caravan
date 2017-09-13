@@ -46,7 +46,7 @@
     method: POST
     user: "{{ acquia_username }}"
     password: "{{ acquia_api_key }}"
-    body: "{{ lookup('file','issue.json') }}"
+    body:
       site_name: "{{ sitename }}"
       install_profile: "{{ profile }}"
       codebase: "{{ stack_id }}"

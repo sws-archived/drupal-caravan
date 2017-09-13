@@ -14,6 +14,9 @@
 # =============================================================
 - hosts: local
 
+  vars_files:
+    - migration_vars.yml
+
   roles:
     - setup-factorysite
     - setup-factorysite-local
