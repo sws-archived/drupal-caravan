@@ -7,7 +7,7 @@
 # then sync a site from the SWS legacy hosting platform to the newly created
 # site.
 #
-# Can be run with: ansible-playbook -i inventory/hosts -l local -c local migration-playbook.yml -vvvv
+# Can be run with: ansible-playbook -i inventory/hosts migration-playbook.yml
 #
 # KNOWN ISSUES:
 # --
@@ -15,9 +15,10 @@
 # PLAY 1: Migrate sites from SWS infrastructure to Site Factory
 # =============================================================
 - hosts: local
+  connection: local
 
   vars_files:
-    - migration_vars.yml
+    - ../migration_vars.yml
 
   roles:
     - setup-factorysite
