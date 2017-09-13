@@ -62,7 +62,7 @@
 - pause: minutes=5
 
 - name: Poll ACSF until site is complete, then move on
-  command: "drush sa @{{ stack }}.01live.{{ sitename }} vget site_name"
+  command: "drush @{{ stack }}.01live.{{ sitename }} vget site_name"
   register: installed_sitename
   until: installed_sitename == "{{ sitename }}"
   retries: 30

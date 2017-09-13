@@ -1,11 +1,11 @@
 # Defaults used for migration playbook.
 # https://github.com/SU-SWS/drupal-caravan
 # ========================================
-
-sitename: "jaaker"
+#
+sitename: ""
 profile: "stanford"
 stack: "cardinal"
 stack_id: "2"
-localhost_home: "/Users/kelliebrownell/"
-acquia_username: "Kellie Brownell"
+localhost_home: ""
+acquia_username: ""
 acquia_api_key: ""
