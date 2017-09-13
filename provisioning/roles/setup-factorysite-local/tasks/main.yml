@@ -31,5 +31,5 @@
 
 - name: Update drush aliases
   template:
-    src: "cardinal.aliases.drushrc.php"
-    dest: "{{ localhost_home }}/.drush/cardinal.aliases.drushrc.php"
+    src: "acsf.aliases.drushrc.php"
+    dest: "{{ localhost_home }}/.drush/acsf.aliases.drushrc.php"
