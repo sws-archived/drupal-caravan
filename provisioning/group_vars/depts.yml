@@ -1,0 +1,6 @@
+profile: "stanford"
+server: "sites2"
+server_alias: "sse"
+site_prefix: "ds"
+dept_site: "TRUE"
+vhost: ""

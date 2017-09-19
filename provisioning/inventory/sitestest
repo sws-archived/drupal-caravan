@@ -1,0 +1,5 @@
+[people]
+#hyperboy sitename="hyperboy"
+jaaker sitename="jaaker"
+[depts]
+eao sitename="eao" vhost="eao"

@@ -1,0 +1,6 @@
+vhost: ""
+profile: "stanford"
+server: "people2"
+server_alias: "ppl"
+site_prefix: "dp"
+dept_site: "FALSE"

@@ -13,6 +13,7 @@
 #   site_prefix
 #   stack
 #   server
+#   dept_site
 #
 # OUTPUTS:
 # --
@@ -26,6 +27,17 @@
 # KNOWN ISSUES:
 # --
 
+- name: Get list of sites on Site Factory
+  uri:
+    url: https://www.stanford.acsitefactory.com/api/v1/sites
+    method: GET
+    user: "{{ acquia_username }}"
+    password: "{{ acquia_api_key }}"
+    force_basic_auth: yes
+    body_format: json
+    return_content: yes
+  register: factory_sites
+
 - name: Download copy of database from sites
   shell: "drush @{{ server_alias }}.{{ site_prefix }}_{{ sitename }} sql-dump > /tmp/{{ sitename }}/dbdump.sql"
 
@@ -34,13 +46,96 @@
   with_items:
     - "-y sql-drop"
     - "sqlc < /tmp/{{ sitename }}/dbdump.sql"
-    - "-y en acsf"
-    - "-y dis webauth"
     - "-y updb"
-#    - "rr"
+
+- name: Set site up as a Department site
+  shell: "drush @acsf.{{ stack }}.{{ sitename }} {{ item }}"
+  with_items:
+    - "vset install_profile stanford_dept"
+    - "sqlq 'update system set status=\"1\" where name=\"stanford_dept\"'"
+  when: dept_site == "TRUE"
+
+- name: Do post-database-restore tasks
+  shell: "drush @acsf.{{ stack }}.{{ sitename }} {{ item }}"
+  with_items:
+    - "-y en acsf stanford_ssp"
+#    - "sspwmd"
+
+- name: Find any absolute paths and replace them - people sites
+  shell: "drush @acsf.{{ stack }}.{{ sitename }} {{ item }}"
+  with_items:
+    - "sar -y 'http://people.stanford.edu/{{ sitename }}/' '/'"
+    - "sar -y 'https://people.stanford.edu/{{ sitename }}/' '/'"
+    - "sar -y '/{{ sitename }}/' '/'"
+    - "sarm -y 'http://people.stanford.edu/{{ sitename }}/' ''"
+    - "sarm -y 'https://people.stanford.edu/{{ sitename }}/' ''"
+    - "sarm -y '/{{ sitename }}/' ''"
+    - "sarl -y 'http://people.stanford.edu/{{ sitename }}/' ''"
+    - "sarl -y 'https://people.stanford.edu/{{ sitename }}/' ''"
+    - "sarl -y '/{{ sitename }}/' ''"
+  when:
+    site_prefix == "dp"
+
+- name: Find any absolute paths and replace them - group and dept sites
+  shell: "drush @acsf.{{ stack }}.{{ sitename }} {{ item }}"
+  with_items:
+    - "sar -y 'http://sites.stanford.edu/{{ sitename }}/' '/'"
+    - "sar -y 'https://sites.stanford.edu/{{ sitename }}/' '/'"
+    - "sar -y '/{{ sitename }}/' '/'"
+    - "sarm -y 'http://sites.stanford.edu/{{ sitename }}/' ''"
+    - "sarm -y 'https://sites.stanford.edu/{{ sitename }}/' ''"
+    - "sarm -y '/{{ sitename }}/' ''"
+    - "sarl -y 'http://sites.stanford.edu/{{ sitename }}/' ''"
+    - "sarl -y 'https://sites.stanford.edu/{{ sitename }}/' ''"
+    - "sarl -y '/{{ sitename }}/' ''"
+  when:
+    site_prefix == "ds"
+
+- name: Find any vhost absolute paths and replace them
+  shell: "drush @acsf.{{ stack }}.{{ sitename }} {{ item }}"
+  with_items:
+    - "sar -y 'http://{{ vhost }}.stanford.edu/' '/'"
+    - "sar -y 'https://{{ vhost }}.stanford.edu/' '/'"
+    - "sarm -y 'http://{{ vhost }}.stanford.edu/' ''"
+    - "sarm -y 'https://{{ vhost }}.stanford.edu/' ''"
+    - "sarl -y 'http://{{ vhost }}.stanford.edu/' ''"
+    - "sarl -y 'https://{{ vhost }}.stanford.edu/' ''"
+  when:
+    vhost != ""
+
+- name: Get public files directory
+  shell: "drush @acsf.{{ stack }}.{{ sitename }} status --fields='File directory path' --field-labels=0"
+  register: file_public_path
+
+- name: Replace sites/default/files with path to files directory
+  shell: "drush @acsf.{{ stack }}.{{ sitename }} sar -y 'sites/default/files' '{{ file_public_path.stdout | replace(' ','') }}'"
 
 - name: Copy files from Sites to local
   shell: "rsync -avz {{ sunetid }}@{{ server }}.stanford.edu:/afs/ir/dist/drupal/{{ site_prefix }}_{{ sitename }}/files/* /tmp/{{ sitename }}/files/."
 
 - name: Copy files from local to Site Factory
   shell: "drush -y rsync /tmp/{{ sitename }}/files/ @acsf.{{ stack }}.{{ sitename }}:%files/"
+
+- name: Add vhost as domain
+  uri:
+    url: "https://www.stanford.acsitefactory.com/api/v1/domains/{{ item }}/add"
+    method: POST
+    user: "{{ acquia_username }}"
+    password: "{{ acquia_api_key }}"
+    force_basic_auth: yes
+    body_format: json
+    body:
+      domain_name: "{{ vhost }}.stanford.edu"
+  with_items: "{{ factory_sites | json_query(\"json.sites[?site=='\" + sitename + \"'].id\") }}"
+  when:
+    vhost != ""
+
+- name: Clear site cache
+  uri:
+    url: "https://www.stanford.acsitefactory.com/api/v1/sites/{{ item }}/cache-clear"
+    method: POST
+    user: "{{ acquia_username }}"
+    password: "{{ acquia_api_key }}"
+    force_basic_auth: yes
+  with_items: "{{ factory_sites | json_query(\"json.sites[?site=='\" + sitename + \"'].id\") }}"
+
