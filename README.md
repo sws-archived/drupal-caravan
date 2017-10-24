@@ -1,5 +1,5 @@
-# Drupal Caravan
-Sites 2.0 CI/CD toolbox.
+# Drupal Caravan (deprecated)
+Pieces have been moved to separate repositories for further development.
 
 ##### Version: 8.x-1.x
 
